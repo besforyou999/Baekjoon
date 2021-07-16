@@ -1,46 +1,56 @@
 ﻿#include <iostream>
-#include <vector>
-#include <algorithm>
 
 using namespace std;
 
-typedef long long ll;
+const int MAX = 100;
 
-const ll MOD = 1000000007LL;
+int A[MAX][MAX];
+int B[MAX][MAX];
+int result[MAX][MAX];
+int N = 0, M = 0, K = 0;
 
-int N, K;
+void multiple(int i, int j , int m);
 
-// mode MOD 거듭제곱(분할정복)
-ll pow(ll a, ll b) {
-	if (b == 0) return 1;
-	if (b % 2 > 0) return (pow(a, b - 1) * a) % MOD;
-	ll half = pow(a, b / 2) % MOD;
-	return (half * half) % MOD;
-}
+int main(void) {
 
-int main()
-{
-	cin >> N >> K;
-	ll A = 1, B = 1;
+	int N, M, K;
 
-	for (ll i = 1; i <= N; i++) { // A = n! , B = k!(n-k)!
-		A *= i;
-		A %= MOD;
-	}
+	cin >> N >> M;
 
-	for (ll i = 1; i <= K; i++) {
-		B *= i;
-		B %= MOD;
-	}
+	for (int i = 0; i < N; i++)
+		for (int j = 0; j < M; j++)
+			cin >> A[i][j];
 
-	for (ll i = 1; i <= N - K; i++) {
-		B *= i;
-		B %= MOD;
+	cin >> M >> K;
+
+	for (int i = 0; i < M; i++)
+		for (int j = 0; j < K; j++)
+			cin >> B[i][j];
+
+	int m = M;
+
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < K; j++) {
+			multiple(i, j , m);			
+		}		
 	}
 	
-	ll B2 = pow(B, MOD - 2);
-	ll ans = A * B2;
-	ans %= MOD;
-	cout << ans << endl;
-	return 0;
+	for (int i = 0; i < N; i++) {
+		for (int j = 0; j < K; j++) {
+			cout << result[i][j] << " ";
+		}
+		cout << endl;
+	}
+	
+}
+
+
+void multiple(int i, int j, int m) {
+	int sum = 0;
+	for (int a = 0; a < m; a++) {
+		sum += A[i][a] * B[a][j];
+		
+	}
+	
+	result[i][j] = sum;
 }
