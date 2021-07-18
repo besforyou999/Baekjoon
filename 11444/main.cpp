@@ -26,11 +26,11 @@ matrix operator * (const matrix & a, const matrix & b) {
 
 matrix power(matrix a, ll n) {
 
-	ll size = 2;
+	ll size = 2;	// 길이
 
-	matrix res(size, vector<ll>(size));
+	matrix res(size, vector<ll>(size)); // 반환할 행렬
 
-	for (int i = 0; i < 2 ; i++ )
+	for (int i = 0; i < 2 ; i++ ) // 단위 행렬 생성
 		res[i][i] = 1;
 
 	while ( n > 0 ) {
