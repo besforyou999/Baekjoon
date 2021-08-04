@@ -35,6 +35,8 @@ bool compare(coord & a, coord & b) {
 
 int main (void) {
 
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
 	int n;
 	cin >> n;
 	int x , y = 0;
