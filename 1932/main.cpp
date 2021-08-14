@@ -1,4 +1,4 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
 using namespace std;
 
@@ -15,4 +15,17 @@ int main(void) {
 
 	for (int i = 1; i <= N; ++i)
 		for (int j = 1 ; j <= i ; ++j)
+			cin >> A[i][j];
+
+	for (int i = 1; i <= N; ++i) {
+		for (int j = 1 ; j <= i ; ++j) {
+			cout <<A[i][j] << " ";
+		}
+		cout << endl;
+	}
+
+
+	
+	return 0;
+}
 
