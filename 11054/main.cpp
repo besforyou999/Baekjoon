@@ -2,27 +2,36 @@
 
 using namespace std;
 
-int arr[1001];
+const int MAX = 1001;
 
-int front_dp[1001];
-int back_dp[1001];
+int arr[MAX];
 
-void solve(int n) {
-	
-	for (int i = 1 ; i <= n ; i++) {
-		front_dp[i] = 1;
-		for (int j = 1 ; j <= i ; j++ ) {
-			if ( arr[j] < arr[i] && front_dp[i] < front_dp[j] + 1 ) {
-				front_dp[i] = front_dp[j] + 1;
+int fdp[MAX];
+int bdp[MAX];
+
+void solve (int n) {
+
+	for (int i = 1 ; i <= n ; i++ ) 
+	{
+		fdp[i] = 1;
+
+		for (int j = 1 ; j <= i ; j++ ) 
+		{
+			if ( fdp[i] < fdp[j] + 1 && arr[j] < arr[i] )
+			{
+				fdp[i] = fdp[j] + 1;
 			}
 		}
 	}
 
-	for (int i = n ; i >= 1 ; i--) {
-		back_dp[i] = 1;
-		for (int j = n; j >= i ; j--) {
-			if ( arr[i] > arr[j] && back_dp[j] + 1 > back_dp[i] ) {
-				back_dp[i] = back_dp[j] + 1;
+	for (int i = n; i >= 1 ; i--)
+	{
+		bdp[i] = 1;
+		for (int j = n; j >= i ; j-- )
+		{
+			if ( arr[j] < arr[i] && bdp[j] + 1 > bdp[i] )
+			{
+				bdp[i] = bdp[j] + 1;
 			}
 		}
 	}
@@ -31,15 +40,19 @@ void solve(int n) {
 
 	for (int i = 0; i <= n ; i++ )
 	{
-		if ( ans < front_dp[i] + back_dp[i] - 1 ) 
-			ans = front_dp[i] + back_dp[i] - 1;
+		if ( ans < fdp[i] + bdp[i] - 1 )
+		{
+			ans = fdp[i] + bdp[i] - 1;
+		}
 	}
 
 	cout << ans << endl;
+
 }
-			
+
 
 int main (void) {
+	
 	ios_base::sync_with_stdio(false);
 	cin.tie(NULL);
 	cout.tie(NULL);
@@ -47,10 +60,11 @@ int main (void) {
 	int n;
 	cin >> n;
 
-	for (int i = 1; i <= n ;i++) 
+	for (int i = 1 ; i <= n ; i++ )
 		cin >> arr[i];
-	
+
 	solve(n);
 
 	return 0;
 }
+	
