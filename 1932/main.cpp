@@ -2,48 +2,53 @@
 
 using namespace std;
 
-int A[505][505], N = 0 , M = 0;
+const int MAX = 501;
 
-int dp[505][505];
+int mat[MAX][MAX];
+int dp[MAX][MAX];
+int N;
 
-void swap(int *a, int *b) {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
-}
-
-int find_max(int a, int b) {
+int get_big(int a, int b) {
 	if ( a > b )
 		return a;
 	else
 		return b;
 }
 
-int main(void) {
 
-	ios_base::sync_with_stdio(false);
-	cout.tie(NULL);
-	cin.tie(NULL);
+int main (void) {
 
 	cin >> N;
 
-	for (int i = 1; i <= N; ++i)
-		for (int j = 1 ; j <= i ; ++j)
-			cin >> A[i][j];
+	for (int i = 1 ; i <= N ; i++ ) 
+		for (int j = 1 ; j <= i ; j++ ) 
+			cin >> mat[i][j];
 
-	dp[1][1] = A[1][1];
+	dp[1][1] = mat[1][1];
 
-	int bigger = 0;
-	int max = 0;
-	for (int i = 2; i <= N; ++i)
-		for (int j = 1 ; j <= i ; ++j) 
-			dp[i][j] = find_max(dp[i-1][j-1] , dp[i-1][j]) + A[i][j];	
+	for (int i = 2 ; i <= N ; i++ ) {
+		for (int j = 1 ; j <= i ; j++ ) {
+			if ( j == 1 ) {
+				dp[i][j] += ( dp[i-1][j] + mat[i][j]);
+			}
+			else if ( j == i ) {
+				dp[i][j] += ( dp[i-1][j-1] + mat[i][j]);
+			}
+			else {
+				dp[i][j] += ( get_big(dp[i-1][j], dp[i-1][j-1]) + mat[i][j] );
+			}
+		}
+	}
 
-	for (int i = 1 ; i <= N; ++i)
-		M = find_max(M, dp[N][i]);	
-	
-	cout << M ;
+	int max = -1;
+
+	for (int i = 1; i <= N ; i++ ) {
+		if ( dp[N][i] > max ) {
+			max = dp[N][i];
+		}
+	}
+
+	cout << max;
 
 	return 0;
 }
-
