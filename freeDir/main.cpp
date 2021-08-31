@@ -2,32 +2,32 @@
 
 using namespace std;
 
-int N, M;
-int mat[1025][1025];
+int dp[1001][1001];
 
-int main(void) {
+int N,M;
 
-	ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
-	int temp , x1, y1, x2, y2;
+int get_max(int a, int b, int c) {
+	
+	int max = 0;
+	if ( max < a ) max = a;
+	if ( max < b ) max = b;
+	if ( max < c ) max = c;
+	return max;
 
+}
+
+int main (void) {
+	int temp;
 	cin >> N >> M;
 
-	for (int i = 1; i <= N ; i++ ) {
-		for (int j = 1 ; j <= N ; j++ ) {
+	for (int i = 1 ; i <= N ; i++) {
+		for (int j = 1 ; j <= M ; j++ ) {
 			cin >> temp;
-			mat[i][j] = mat[i-1][j] + mat[i][j-1] - mat[i-1][j-1] + temp;			
+			dp[i][j] = get_max(dp[i-1][j-1], dp[i-1][j], dp[i][j-1]) + temp;			
 		}
 	}
-
-	for (int i = 0 ; i < M ; i++ ) {
-
-		cin >> x1 >> y1;
-		cin >> x2 >> y2;
-
-		cout <<	mat[x2][y2] - mat[x1-1][y2] - mat[x2][y1-1] + mat[x1-1][y1-1] << endl;
-	}
+	
+	cout << dp[N][M];
 
 	return 0;
 }
-
-		
