@@ -2,43 +2,32 @@
 
 using namespace std;
 
-int N, K;
+int N, M;
+int mat[1025][1025];
 
-int weight[101];
-int value[101];
-int dp[101][100001];
+int main(void) {
 
-int bigger(int a, int b) {
-	if ( a > b )
-		return a;
-	else
-		return b;
-}
+	ios_base::sync_with_stdio(false), cin.tie(NULL), cout.tie(NULL);
+	int temp , x1, y1, x2, y2;
 
-int main (void) {
+	cin >> N >> M;
 
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-
-	cin >> N >> K;
-
-	for ( int i = 1 ; i <= N ; i++) 
-		cin >> weight[i] >> value[i];
-	
-	for ( int i = 1 ; i <= N ; i++ ) 
-	{
-		for (int j = 1; j <= K ; j++ )
-		{
-			if (j >= weight[i])
-			   	dp[i][j] = bigger(dp[i-1][j], dp[i-1][j-weight[i]] + value[i]);
-			else
-				dp[i][j] = dp[i-1][j];
+	for (int i = 1; i <= N ; i++ ) {
+		for (int j = 1 ; j <= N ; j++ ) {
+			cin >> temp;
+			mat[i][j] = mat[i-1][j] + mat[i][j-1] - mat[i-1][j-1] + temp;			
 		}
 	}
 
-	cout << dp[N][K];
+	for (int i = 0 ; i < M ; i++ ) {
+
+		cin >> x1 >> y1;
+		cin >> x2 >> y2;
+
+		cout <<	mat[x2][y2] - mat[x1-1][y2] - mat[x2][y1-1] + mat[x1-1][y1-1] << endl;
+	}
 
 	return 0;
 }
 
+		
