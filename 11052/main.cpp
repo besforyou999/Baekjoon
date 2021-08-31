@@ -1,31 +1,23 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-int dp[1001];
+const int MAX = 1001;
 
-int find_max(int a, int b ) {
+int p_arr[MAX];
+int dp[MAX];
+int n;
 
-	if ( a > b )
-		return a;
+int main (void ) {
 
-	return b;
-}
-
-int main(void) {
-
-	int n;
 	cin >> n;
 
-	vector<int> v(n+1);
+	for ( int i = 1 ; i <= n ; i++ ) 
+		cin >> p_arr[i];
 
-	for (int i = 1; i <= n ; i++ ) 
-		cin >> v[i];
-
-	for (int i=1; i<= n ;i++ ) {
-		for (int j = 1; j <= i ; j++ ) {
-			dp[i] = find_max(dp[i], dp[i-j] + v[j]);
+	for (int i = 1 ; i <= n ; i++ ) {
+		for (int j = 1 ; j <= i ; j++ ) {
+			dp[i] = max(dp[i] , dp[i-j] + p_arr[j]);
 		}
 	}
 
@@ -33,4 +25,3 @@ int main(void) {
 
 return 0;
 }
-

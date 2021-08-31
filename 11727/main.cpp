@@ -1,26 +1,32 @@
 #include <iostream>
+
 using namespace std;
 
-int DP[1001] = {0, 1, 3};
+const int DIV = 10007;
+const int MAX = 1001;
 
-const int limit = 10007;
+int main (void) {
 
-int f(int n) {
-	if (DP[n]) 
-		return DP[n];
-
-	return DP[n] = ( f(n-1) % limit + 2 * f(n-2) % limit) % 10007;
-}
-
-int main(){
 	int n;
 	cin >> n;
-	cout << f(n) << endl;
 
-	return 0;
+	int arr[MAX];
+
+	arr[0] = 0;
+	arr[1] = 1;
+	arr[2] = 3;
+
+	if ( n <= 2 ) {
+		cout << arr[n];
+		return 0;
+	}
+
+	for (int i = 3 ; i <= n ; i++ ) 
+		arr[i] = ( arr[i-1] % DIV + 2 * arr[i-2] % DIV ) % DIV;
+
+	cout << arr[n];
+
+return 0;
 }
 
-
-
 	
-
