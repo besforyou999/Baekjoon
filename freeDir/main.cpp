@@ -1,29 +1,45 @@
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
-int n;
-int arr[1001];
-int dp[1001];
+const int MAX = 100 + 1;
+int cache[MAX][MAX][2];
+int N, K;
 
-int main(void) {
+int seq(int len, int total, int bit) {
 
-	cin >> n;
+	// 기저 
+	if ( len >= N || total > K )
+		return 0;
+	
+	// 조건 충족
+	if ( total == K || len == N-1)
+		return 1;
 
-	for (int i = 1 ; i <= n ; i++ ) 
-		cin >> arr[i];
+	int &result = cache[len][total][bit];
+	if (result != -1)
+		return result;
 
-	int max = -1;
+	result = seq(len + 1, total, 0) + seq(len + 1, total + bit * 1, 1);
+	return result;
+}
 
-	for ( int i = 1; i <= n ; i++ ) {
-		dp[i] = 1;
-		for ( int j = 1 ; j <= i ; j++ ) {
-			if ( arr[i] <arr[j] && dp[i] < dp[j] + 1) 
-				dp[i] = dp[j] + 1;
-		}
-		if ( max < dp[i] ) max = dp[i];
+int main (void) {
+
+	int T;
+	cin >> T;
+
+	while (T--) {
+
+		cin >> N >> K;
+
+		memset(cache, -1 ,sizeof(cache));			
+
+		cout << seq(0, 0, 0) + seq(0, 0, 1) << endl;
+
 	}
 
-	cout << max;	
 	return 0;
 }
+		
