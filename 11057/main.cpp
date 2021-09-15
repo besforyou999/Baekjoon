@@ -22,10 +22,9 @@ int main(void) {
 			}
 		}
 	}
-
+	
 	for (i = 0; i <= 9; ++i) sum += dp[n][i];
 
-	cout << sum % mod ;
-
+cout << sum % mod ;
 	return 0;
 }
