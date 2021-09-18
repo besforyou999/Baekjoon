@@ -24,8 +24,10 @@ void Sol()
 	{
 		for (int j = 1; j <= K ; j++ ) 
 		{
-			if ( j >= weight[i] ) DP[i][j] = max(DP[i-1][j], DP[i - 1][j - weight[i]] + value[i]);
-			else DP[i][j] = DP[i - 1][j];
+			if ( j >= weight[i] ) 
+				DP[i][j] = max(DP[i-1][j], DP[i - 1][j - weight[i]] + value[i]);
+			else 
+				DP[i][j] = DP[i - 1][j];
 		}
 	}
 	cout << DP[N][K] << endl;
