@@ -7,4 +7,3 @@
 티스토리에 그래프 문제 푼거 올리면 좋을듯하다
 
 
-git commit -a testong
