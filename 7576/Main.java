@@ -7,6 +7,7 @@ public class Main {
 	static int N,M;
 	static int box[][];
 	static boolean visited[][];
+	static	int oneCount = 0, zeroCount = 0, minusOneCount = 0;
 
 	public static void main(String []args) {
 
@@ -17,40 +18,41 @@ public class Main {
 		box = new int[N][M];
 		visited = new boolean[N][M];	
 
-		int counter = 0;
-		int x,y;
+		int x = 0, y = 0;
 
 		for ( int i = 0; i < N ; i++ ) {
-			for ( int j = 0; j < M ; j++ )
-				box[i][j] = sc.nextInt();
-				if ( box[i][j] == 1 ) {
+			for ( int j = 0; j < M ; j++ ) {
+				int temp = sc.nextInt();
+				box[i][j] = temp;
+				if ( temp == 1 ) {
 					x = i;
 					y = j;
-				   	counter += 1;
+				   	oneCount += 1;
 				}
+				else if ( temp == 0 ) 
+					zeroCount += 1;
+				else
+					minusOneCount += 1;
+			}
 		}
 
-		if ( counter == N * M ) {
+		if ( oneCount == N * M ) {
 			System.out.print(0);
 			return;
 		}
 
-		cout << BFS(x,y);
-
+		System.out.print(BFS(x,y));
 		return ;
 	}
 
 	public static int BFS(int x,int y)
 	{	
-		int day = 1;
-		int count = 1;
+		int day = 1, count = 1;
 		int dx[] = { 1, -1, 0, 0 };
 		int dy[] = { 0, 0, 1, -1 };
 
 		Queue<int[]> queue = new LinkedList<>();
-
 		queue.add(new int[] {x,y});
-
 		visited[x][y] = true;	
 
 		while ( !queue.isEmpty() )
@@ -78,5 +80,10 @@ public class Main {
 			day += 1;
 
 		}
+
+		if ( count < zeroCount ) 
+			return -1;
+
+		return day;
 	}		
 }
