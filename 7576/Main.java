@@ -6,8 +6,7 @@ public class Main {
 
 	static int N,M;
 	static int box[][];
-	static boolean visited[][];
-	static	int oneCount = 0, zeroCount = 0, minusOneCount = 0;
+	static Queue<int[]> queue;
 
 	public static void main(String []args) {
 
@@ -16,7 +15,7 @@ public class Main {
 		M = sc.nextInt(); N = sc.nextInt();
 	
 		box = new int[N][M];
-		visited = new boolean[N][M];	
+		queue = new LinkedList<>();
 
 		int x = 0, y = 0;
 
@@ -25,65 +24,50 @@ public class Main {
 				int temp = sc.nextInt();
 				box[i][j] = temp;
 				if ( temp == 1 ) {
-					x = i;
-					y = j;
-				   	oneCount += 1;
+					queue.add(new int[] {i,j});
 				}
-				else if ( temp == 0 ) 
-					zeroCount += 1;
-				else
-					minusOneCount += 1;
 			}
 		}
 
-		if ( oneCount == N * M ) {
-			System.out.print(0);
-			return;
-		}
+		System.out.print(BFS());
 
-		System.out.print(BFS(x,y));
 		return ;
 	}
 
-	public static int BFS(int x,int y)
-	{	
-		int day = 1, count = 1;
+	public static int BFS() {
+		
 		int dx[] = { 1, -1, 0, 0 };
 		int dy[] = { 0, 0, 1, -1 };
 
-		Queue<int[]> queue = new LinkedList<>();
-		queue.add(new int[] {x,y});
-		visited[x][y] = true;	
-
-		while ( !queue.isEmpty() )
-		{
+		while ( !queue.isEmpty() ) {
 			int [] temp = queue.poll();
-			int newX = temp[0];
-			int newY = temp[1];
+			int newY = temp[0];
+			int newX = temp[1];
 
-			for ( int i = 0; i < 4 ; i++ )
-			{
+			for ( int i = 0; i < 4 ; i++ ) {
 				int nextX = newX + dx[i];
 				int nextY = newY + dy[i];
 
-				if ( nextX >= 0 && nextX < M && nextY >= 0 && nextY < N )
-				{
-					if ( box[nextX][nextY] != -1 && visited[nextX][nextY] == false )
-					{
-						queue.add(new int[] {nextX,nextY});
-						visited[nextX][nextY] = true;
-						count += 1;	
+				if ( nextX >= 0 && nextX < M && nextY >= 0 && nextY < N ) {
+					if ( box[nextY][nextX] == 0 ) {
+						box[nextY][nextX] = box[newY][newX] + 1;
+						queue.add(new int[] { nextY, nextX });
 					}
 				}
 			}				
-		
-			day += 1;
-
 		}
 
-		if ( count < zeroCount ) 
-			return -1;
+		int result = 0;		
 
-		return day;
+		for ( int i = 0 ; i < N ; i++ ) {
+			for ( int j = 0 ; j < M ; j++ ) {
+				if ( box[i][j] == 0 ) 
+					return -1;
+
+				if ( result < box[i][j] ) result = box[i][j];
+			}
+		}
+
+		return result - 1;
 	}		
 }
