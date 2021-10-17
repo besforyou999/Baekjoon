@@ -9,5 +9,6 @@
 21.10.15
 
 7576 다시 풀어보자:
-stringbuffer 사용해보기
 
+stringbuffer 사용해보기
+java로 다시 풀어보기
