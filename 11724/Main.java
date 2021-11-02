@@ -4,7 +4,7 @@ public class Main {
 
 	static int N,M;
 	static int graph[][];
-	static boolean visited[]
+	static boolean visited[];
 
 	public static void main(String []args) {
 
@@ -14,7 +14,7 @@ public class Main {
 		M = sc.nextInt();
 
 		graph = new int[N+1][N+1];
-		visited = new boolean[N+1]
+		visited = new boolean[N+1];
 
 		int one, two;
 		for ( int i = 0 ; i < M ; i++ ) {
