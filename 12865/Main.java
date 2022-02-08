@@ -1,39 +1,37 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.StringTokenizer;
 
 public class Main {
-	public static void main(String [] args) {
+	public static void main(String []args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st;
 
-		Scanner sc = new Scanner(System.in);
 		final int MAX = 101;
-		int N, K;
-		int w_arr[] = new int[MAX];
-		int v_arr[] = new int[MAX];
-		int dp[][] = new int[MAX][100001];
+		int N , K;
+		st = new StringTokenizer(br.readLine());
+		N = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
 
-		N = sc.nextInt();
-		K = sc.nextInt();
+		int W [] = new int[MAX];
+		int V [] = new int[MAX];
+		int DP [][] = new int[MAX][100001];
 
-		for ( int i = 1 ; i <= N ; i++ ) {
-			w_arr[i] = sc.nextInt();
-			v_arr[i] = sc.nextInt();
+		for (int i = 1 ; i <= N ; i++) {
+			st = new StringTokenizer(br.readLine());
+			W[i] = Integer.parseInt(st.nextToken());
+			V[i] = Integer.parseInt(st.nextToken());
 		}
 
-		for ( int i = 1 ; i <= N ; i++ ) {
-			for ( int j = 1 ; j <= K ; j++ ) {
-				if ( j >= w_arr[i] ) 
-					dp[i][j] = Bigger( dp[i-1][j], dp[i-1][j-w_arr[i]] + v_arr[i] );
+
+		for (int i = 1 ; i <= N ; i++) {
+			for (int j = 1 ; j <= K ; j++) {
+				if (j >= W[i])
+					DP[i][j] = Math.max(DP[i-1][j], DP[i-1][j-W[i]] + V[i]);
 				else
-					dp[i][j] = dp[i-1][j];		
+					DP[i][j] = DP[i-1][j];
 			}
 		}
-
-		System.out.print(dp[N][K]);
+		System.out.print(DP[N][K]);
 	}
 
-	public static int Bigger(int a, int b) {
-		if ( a > b )
-			return a;
-		else
-			return b;
-	}
 }
