@@ -39,21 +39,12 @@ public class Main {
             Pair [] walls = wall_pos.get(i);
             int temp = getSafeSpaceSize(walls);
             max = Math.max(max, temp);
-            reset();
+			visited = new boolean[N][M];
         }
         System.out.print(max);
     }
 
-    public static void reset() {
-        for (int i = 0 ; i < N ; i++) {
-            for (int j = 0 ; j < M ; j++) {
-                visited[i][j] = false;
-            }
-        }
-    }
-
-
-    public static int getSafeSpaceSize(Pair [] walls) {
+	public static int getSafeSpaceSize(Pair [] walls) {
         copyMatToBoard();
         for (Pair p : walls) {
             int y = p.y;
