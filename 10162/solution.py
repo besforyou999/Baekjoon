@@ -32,7 +32,7 @@ if T >= C:
 if T != 0:
     answer = -1
 elif T == 0:
-    answer = str(countA) + " " + str(countB) + " " + str(countC)
+   answer = str(countA) + " " + str(countB) + " " + str(countC)
 
 print(answer)
 
