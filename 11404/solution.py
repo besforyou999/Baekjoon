@@ -4,13 +4,6 @@ input = sys.stdin.readline
 MAX = 1e9
 
 
-def Init():
-    for row in range(n):
-        for col in range(n):
-            if row != col:
-                graph[row][col] = MAX
-
-
 def Floyd():
     for mid in range(0, n):
         for s in range(0, n):
