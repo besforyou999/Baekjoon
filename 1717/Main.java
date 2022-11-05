@@ -14,7 +14,24 @@ public class Main {
         for (int i = 1 ; i < N + 1 ; i++) {
             parent[i] = i;
         }
+		
+		StringBuilder sb = new StringBuilder();
+        for (int i = 0 ; i < M ; i++) {
+            st = new StringTokenizer(br.readLine());
+            int cmd = Integer.parseInt(st.nextToken());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
 
+            if (cmd == 0) {
+                union(a, b);
+            } else if (cmd == 1) {
+                sb.append((isSameParent(a, b) ? "YES" : "NO") + "\n");
+            } else {
+                continue;
+            }
+        }
+
+        System.out.print(sb);
 
     }
 
