@@ -6,6 +6,15 @@ import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.StringTokenizer;
 
+/*
+ * @author jsm
+ * @since 2023.02.10
+ * @see https://www.acmicpc.net/problem/5014
+ * @performance 36404 KB, 140 ms
+ * @category #bfs
+ * @note 
+ */
+
 public class Main {
 	/*
 	 * F : 건물 총 층수
