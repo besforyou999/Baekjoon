@@ -8,20 +8,20 @@ public class Main {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
         N = Integer.parseInt(br.readLine());
-        int len = N * N;
-        int []nums = new int[len];
-        int idx = 0;
-
         for (int i = 0 ; i < N ; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             for (int j = 0 ; j < N ; j++) {
-                nums[idx++] = Integer.parseInt(st.nextToken());
+               pq.add(Integer.parseInt(st.nextToken()));
+               if (pq.size() == N + 1) {
+                   pq.poll();
+               }
             }
         }
 
-        Arrays.sort(nums);
+        Iterator<Integer> iter = pq.iterator();
 
-        System.out.print(nums[len - N]);
+        System.out.println(iter.next());
     }
 }
