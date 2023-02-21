@@ -41,11 +41,7 @@ public class Main {
         }
 
         Arrays.sort(students);
-        /*
-        for (Student s : students) {
-            System.out.println(s.skill + " " + s.group);
-        }
-           */
+        
         int min = 1000000001;
         int lp = 0, rp = 1;
 
@@ -63,7 +59,6 @@ public class Main {
                 MAX = student.skill;
                 group_rec[student.group]++;
             } else {
-                //printStatus(lp, rp);
                 int diff = Math.abs(MAX - MIN);
                 min = Math.min(min, diff);
                 group_rec[students[lp].group]--;
@@ -73,15 +68,6 @@ public class Main {
         }
 
         System.out.println(min);
-
-    }
-
-    static void printStatus(int l, int r) {
-        System.out.println("lp : " + l + " " + "rp : " + r);
-        for (int i = 1 ; i <= N ; i++)
-            System.out.print(group_rec[i] + " ");
-        System.out.println();
-        System.out.println();
     }
 
     static boolean hasAllGroups() {
