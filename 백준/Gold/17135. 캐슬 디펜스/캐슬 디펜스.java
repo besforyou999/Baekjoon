@@ -56,14 +56,6 @@ public class Main {
             }
 
             archerPositions.add(archerPos);
-            /*
-            for (int a : archerPos)
-                System.out.print(a + " ");
-            System.out.println();
-            */
-            //int res = simulation(archerPos);
-            //System.out.println("res : " + res);
-            //ANS = Math.max(ANS, res);
             return;
         }
 
@@ -85,19 +77,15 @@ public class Main {
         int [][] mat = copySrc(); // 원본 두고 복사본으로 진행
         int enemyCnt = enemy_cnt_src; // 적 숫자 원본 복사하여 진행
         int killCnt = 0;
-        // 1. 궁수 공격
+        
         for (int i = 0 ; i <= N ; i++) {
             int kills = archerAtk(mat, archersPos);
-            //System.out.println("kills : " + kills);
             enemyCnt -= kills;
             killCnt += kills;
-            //printMatrix(mat);
 
             // 2. 적 이동
             int loss = moveEnemies(mat);
-            //System.out.println("loss : " + loss);
             enemyCnt -= loss;
-            //printMatrix(mat);
         }
         return killCnt;
     }
@@ -179,22 +167,22 @@ public class Main {
         }
 
         if (targets.size() == 0) return null;
-     
+
         Collections.sort(targets, new Comparator<int[]>() {
             @Override
             public int compare(int[] o1, int[] o2) {
                 return o1[2] - o2[2];
             }
         });
-        
+
         int dist = targets.get(0)[2];
-        
+
         for (int i = 0 ; i < targets.size() ; i++) {
             if (targets.get(i)[2] != dist) {
                 targets.remove(i--);
             }
         }
-        
+
         if (targets.size() == 1) return targets.get(0);
 
         Collections.sort(targets, new Comparator<int[]>() {
@@ -209,14 +197,5 @@ public class Main {
 
     static boolean isIn(int r, int c) {
         return (r >= 0 && r < N + 1 && c >= 0 && c < M);
-    }
-
-    static void printMatrix(int [][]mat) {
-        for (int i = 0 ; i < N ; i++) {
-            for (int j = 0 ; j < M ; j++) {
-                System.out.print(mat[i][j] + " ");
-            }
-            System.out.println();
-        }
     }
 }
