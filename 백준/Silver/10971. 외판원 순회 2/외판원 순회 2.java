@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int N;
-    static int [][] mat;
+    static int mat[][];
     static boolean [] visited;
     static int ANS = Integer.MAX_VALUE;
 
@@ -28,10 +28,11 @@ public class Main {
         }
 
         System.out.println(ANS);
+
     }
 
     static void dfs(int start, int at, int cost) {
-        if (AllVisited()) {
+        if (allVisited()) {
             if (mat[at][start] != 0) {
                 ANS = Math.min(ANS, cost + mat[at][start]);
             }
@@ -45,12 +46,11 @@ public class Main {
                 visited[i] = false;
             }
         }
-
     }
 
-    static boolean AllVisited() {
+    static boolean allVisited() {
         for (int i = 0 ; i < N ; i++) {
-            if(!visited[i]) return false;
+            if (!visited[i]) return false;
         }
         return true;
     }
