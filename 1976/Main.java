@@ -1,62 +1,70 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static int N, M;
-    public static int[] parent;
-
+    static int N, M;
+    static int [] parent;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
 
-        parent = new int[N + 1];
-        for (int i = 1; i < N + 1; i++) {
-            parent[i] = i;
-        }
+        MakeSet();
 
-        for (int row = 0; row < N; row++) {
+        for (int i = 1 ; i <= N ; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int col = 0; col < N; col++) {
+            for (int j = 1 ; j <= N ; j++) {
                 int val = Integer.parseInt(st.nextToken());
-                if (val == 1) {
-                    union(row + 1, col + 1);
-                }
+                if (val == 1) union(i, j);
             }
         }
 
         StringTokenizer st = new StringTokenizer(br.readLine());
-        int one = Integer.parseInt(st.nextToken());
-        int root = find_root(one);
-        for (int i = 1; i < M; i++) {
-            int dest = Integer.parseInt(st.nextToken());
-            if (root != find_root(dest)) {
-                System.out.print("NO");
-                return;
+        int root = findRoot(Integer.parseInt(st.nextToken()));
+
+        while(st.hasMoreTokens()) {
+            int city = Integer.parseInt(st.nextToken());
+            int root2 = findRoot(city);
+            if (root != root2) {
+                System.out.println("NO");
+                System.exit(0);
             }
         }
-        System.out.print("YES");
+
+        System.out.println("YES");
     }
 
-    public static int find_root(int x) {
-        if (x == parent[x]) {
+    static void MakeSet() {
+        parent = new int[N + 1];
+        for (int i = 1 ; i <= N ; i++) parent[i] = i;
+    }
+
+    static int findRoot(int x) {
+        if (x == parent[x])
             return x;
-        }
-        return parent[x] = find_root(parent[x]);
+        else
+            return parent[x] = findRoot(parent[x]);
     }
 
-    public static void union(int x, int y) {
-        x = find_root(x);
-        y = find_root(y);
+    static boolean union(int x, int y) {
+        x = findRoot(x);
+        y = findRoot(y);
 
-        if (x != y) {
+        if (x == y) {
+            return false;
+        } else {
             if (x < y) {
-                parent[y] = x;
-            } else {
+                parent[y] = x; // 작은 숫자가 root가 되도록
+            } else
                 parent[x] = y;
-            }
+            return true;
         }
     }
-}
 
+    static boolean sameRoot(int x, int y) {
+        return findRoot(x) == findRoot(y);
+    }
+
+}
