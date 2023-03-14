@@ -18,17 +18,10 @@ public class Main {
                 dp[level][room] = dp[level][room - 1] + dp[level - 1][room];
             }
         }
-        /*
-        for (int level = 14 ; level >= 0 ; level--) {
-            for (int room = 1 ; room <= 14 ; room++) {
-                System.out.print(dp[level][room] + " ");
-            }
-            System.out.println();
-        }
-        */
 
         int T = Integer.parseInt(br.readLine());
         StringBuilder sb = new StringBuilder();
+        
         while( T-- > 0) {
             int k = Integer.parseInt(br.readLine());
             int n = Integer.parseInt(br.readLine());
