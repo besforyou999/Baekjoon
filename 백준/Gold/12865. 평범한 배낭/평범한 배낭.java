@@ -11,7 +11,6 @@ public class Main {
         StringTokenizer st = new StringTokenizer(br.readLine());
         N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
-
         W = new int[N + 1];
         V = new int[N + 1];
         dp = new int[N + 1][K + 1];
