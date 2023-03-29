@@ -1,42 +1,28 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class Main {
-	
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringBuilder sb = new StringBuilder();
-	static StringTokenizer st;
-	
-	static int n, m;
-	static int dp[][];
-	public static void main(String[] args) throws IOException {
-		st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
-		dp = new int [n + 1][n + 1];
-		for (int i = 0; i < n + 1; i++) {
-			for (int j = 0; j < n + 1; j++) {
-				dp[i][j] = -1;
-			}
-		}
-		recur(0,0);
-		System.out.println(dp[0][0] % 10007);
-	}
+    static int DIV = 10007;
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(st.nextToken());
+        int K = Integer.parseInt(st.nextToken());
 
-	public static int recur(int times, int got) {
-		if (times == n) {
-			if (got == m) {
-				return 1;
-			}
-			return 0;
-		}
-		if (dp[times][got] != -1) {
-			return dp[times][got] % 10007;
-		}
-		dp[times][got] = recur(times + 1, got) % 10007 + recur(times + 1, got + 1) % 10007;
-		return dp[times][got] % 10007;
-	}
+        int DP [][] = new int[1001][1001];
+
+        for (int i = 1 ; i <= N ; i++) {
+            for (int j = 0 ; j <= i ; j++) {
+                if (j == 0 || i == j) {
+                    DP[i][j] = 1;
+                } else {
+                    DP[i][j] = (DP[i-1][j] + DP[i-1][j-1]) % DIV;
+                }
+            }
+        }
+
+        System.out.print(DP[N][K]);
+    }
 }
