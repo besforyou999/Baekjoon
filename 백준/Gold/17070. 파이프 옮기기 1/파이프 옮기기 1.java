@@ -2,59 +2,45 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
-    static int mat[][];
-    static Integer N;
-    static int ans = 0;
+
+    static int N, map[][], dp[][][];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st;
+
         N = Integer.parseInt(br.readLine());
-        mat = new int[N+1][N+1];
-        for (int i = 0 ; i < N ; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 0 ; j < N ; j++) {
-                mat[i+1][j+1] = Integer.parseInt(st.nextToken());
-            }
-        }
-        DFS(1, 2, 0);
-        System.out.print(ans);
-    }
-    /*
-        0 : horizontal
-        1 : vertical
-        2 : diag
-    */
-    public static void DFS (int y, int x, int direction) {
-        if (y == N && x == N) {
-            ans += 1;
-            return;
-        }
+        map = new int[N + 1][N + 1];
+        dp = new int[N + 1][N + 1][3];
 
-        switch (direction) {
-            case 0: {
-                if (x + 1 <= N && mat[y][x + 1] == 0) {
-                    DFS(y, x + 1, 0);
-                }
-                break;
-            }
-            case 1: {
-                if (y + 1 <= N && mat[y + 1][x] == 0) {
-                    DFS(y + 1, x, 1);
-                }
-                break;
-            }
-            case 2: {
-                if (x + 1 <= N && mat[y][x + 1] == 0) {
-                    DFS(y, x + 1, 0);
-                }
-                if (y + 1 <= N && mat[y + 1][x] == 0) {
-                    DFS(y + 1, x, 1);
-                }
-                break;
+        for (int i = 1 ; i <= N ; i++) {
+            st = new StringTokenizer(br.readLine());
+            for (int j = 1 ; j <= N ; j++) {
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        if (x + 1 <= N && y + 1 <= N && mat[y][x+1] == 0 && mat[y+1][x+1] == 0 && mat[y+1][x] == 0) {
-            DFS(y + 1, x + 1, 2);
-        }
+        dp[1][2][0] = 1;
+
+        System.out.println(dp());
     }
+
+    public static int dp() {
+        for (int i = 1 ; i <= N ; i++) {
+            for (int j = 1 ; j <= N ; j++) {
+
+                if (map[i][j] == 1) continue;
+
+                dp[i][j][0] += dp[i][j-1][0] + dp[i][j-1][2];
+                dp[i][j][1] += dp[i-1][j][1] + dp[i-1][j][2];
+
+                if (map[i-1][j] == 0 && map[i][j-1] == 0) {
+                    dp[i][j][2] += dp[i-1][j-1][0] + dp[i-1][j-1][1] + dp[i-1][j-1][2];
+                }
+            }
+        }
+
+        return dp[N][N][0] + dp[N][N][1] + dp[N][N][2];
+    }
+
 }
