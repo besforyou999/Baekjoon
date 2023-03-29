@@ -4,25 +4,32 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int DIV = 10007;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(st.nextToken());
 
-        int DP [][] = new int[1001][1001];
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringBuilder sb = new StringBuilder();
+	static StringTokenizer st;
 
-        for (int i = 1 ; i <= N ; i++) {
-            for (int j = 0 ; j <= i ; j++) {
-                if (j == 0 || i == j) {
-                    DP[i][j] = 1;
-                } else {
-                    DP[i][j] = (DP[i-1][j] + DP[i-1][j-1]) % DIV;
-                }
-            }
-        }
+	static int n, m;
+	static int dp[];
 
-        System.out.print(DP[N][K]);
-    }
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		dp = new int[n + 1];
+		cal();
+		System.out.println(dp[m] % 10007);
+	}
+	
+	public static void cal() {
+		dp[0] = 1;
+		for (int i = 1; i < n + 1; i++) {
+			int keep[] = new int [n + 1];
+			keep[0] = 1;
+			for (int j = 1; j < i + 1; j++) {
+				keep[j] = dp[j] % 10007 + dp[j - 1] % 10007;
+			}
+			dp = keep;
+		}
+	}
 }
