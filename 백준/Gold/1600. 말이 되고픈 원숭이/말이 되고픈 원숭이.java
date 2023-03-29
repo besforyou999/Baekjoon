@@ -1,112 +1,96 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int K, W, H, ans;
+    static int mat[][];
 
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringBuilder sb = new StringBuilder();
-	static StringTokenizer st;
+    static int dr [] = {-1, 1, 0, 0};
 
-	static int c, n, m;
-	static int map[][];
-	static boolean visited[][][];
-	
-	static int dx[] = new int[] {1, 0, -1, 0};
-	static int dy[] = new int[] {0, 1, 0, -1};
-	static int hx[] = new int[] {2, 1, -1, -2, -2, -1, 1, 2};
-	static int hy[] = new int[] {1, 2, 2, 1, -1, -2, -2, -1};
-	
-	static boolean flag = true;
-	
-	
-	public static void main(String[] args) throws IOException {
-		input();
-		bfs();
-		if (flag) {
-			System.out.println("-1");
-		}
-	}
-	
-	public static void bfs() {
-		Queue<Node> qu = new ArrayDeque<>();
-		qu.add(new Node(0, 0, 0, 0));
-		while(!qu.isEmpty()) {
-			Node now = qu.poll();
-			int nextx, nexty;
-			if (now.limit == c + 1) {
-				continue;
-			}
-			if (now.y == n - 1 && now.x == m - 1) {
-				System.out.println(now.count);
-				flag = false;
-				return;
-			}
-			for (int i = 0; i < 4; i++) {
-				nexty = dy[i] + now.y;
-				nextx = dx[i] + now.x;
-				if (nexty < 0 || nexty > n - 1 || nextx < 0 || nextx > m - 1) {
-					continue;
-				}
-				if (map[nexty][nextx] == 1) {
-					continue;
-				}
-				if (visited[nexty][nextx][now.limit]) {
-					continue;
-				}
-				visited[nexty][nextx][now.limit] = true;
-				qu.add(new Node(nexty, nextx, now.limit, now.count + 1));
-			}
-			
-			for (int i = 0; i < 8; i++) {
-				nexty = hy[i] + now.y;
-				nextx = hx[i] + now.x;
-				if (nexty < 0 || nexty > n - 1 || nextx < 0 || nextx > m - 1 || now.limit == c) {
-					continue;
-				}
-				if (map[nexty][nextx] == 1) {
-					continue;
-				}
-				if (visited[nexty][nextx][now.limit + 1]) {
-					continue;
-				}
-				visited[nexty][nextx][now.limit + 1] = true;
-				qu.add(new Node(nexty, nextx, now.limit + 1, now.count + 1));
-			}
-		}
-	}
-	
-	public static void input() throws IOException {
-		c = Integer.parseInt(br.readLine());
-		st = new StringTokenizer(br.readLine());
-		m = Integer.parseInt(st.nextToken());
-		n = Integer.parseInt(st.nextToken());
-		map = new int[n][m];
-		visited = new boolean[n][m][c + 1];
-		for (int i = 0; i < n; i++) {
-			st = new StringTokenizer(br.readLine());
-			for (int j = 0; j < m; j++) {
-				map[i][j] = Integer.parseInt(st.nextToken());
-			}
-		}
-	}
-}
+    static int dc [] = {0, 0, -1, 1};
 
-class Node {
-	int y;
-	int x;
-	int limit;
-	int count;
-	
-	public Node(int y, int x, int limit, int count) {
-		super();
-		this.y = y;
-		this.x = x;
-		this.limit = limit;
-		this.count = count;
-	}
-	
+    static int horse_r [] = {-2, -1, 1, 2, 2, 1, -1, -2};
+    static int horse_c [] = {1, 2, 2, 1, -1, -2, -2, -1};
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        K = Integer.parseInt(st.nextToken());
+
+        st = new StringTokenizer(br.readLine());
+
+        W = Integer.parseInt(st.nextToken());
+        H = Integer.parseInt(st.nextToken());
+
+        mat = new int[H][W];
+
+        for (int r = 0 ; r < H ; r++) {
+            st = new StringTokenizer(br.readLine());
+            for (int c = 0 ; c < W ; c++) {
+                mat[r][c] = Integer.parseInt(st.nextToken());
+            }
+        }
+
+        ans = Integer.MAX_VALUE;
+
+        bfs();
+
+        if (ans == Integer.MAX_VALUE) {
+            System.out.println(-1);
+        } else {
+            System.out.println(ans);
+        }
+    }
+
+    static void bfs() {
+        Queue<int []> queue = new LinkedList<>();
+        queue.add(new int[] {0, 0, 0, K});
+
+        boolean [][][] visit = new boolean[H][W][K + 1];
+        visit[0][0][K] = true;
+
+        while(!queue.isEmpty()) {
+
+            int cod [] = queue.poll();
+
+            int r = cod[0];
+            int c = cod[1];
+            int cnt = cod[2];
+            int horse = cod[3];
+
+            if (r == H - 1 && c == W - 1) {
+                ans = Math.min(ans, cnt);
+                break;
+            }
+
+            for (int i = 0 ; i < 4 ; i++) {
+                int nr = r + dr[i];
+                int nc = c + dc[i];
+                if (isIn(nr, nc) && mat[nr][nc] == 0 && !visit[nr][nc][horse]) {
+                    visit[nr][nc][horse] = true;
+                    queue.add(new int[] {nr, nc, cnt + 1, horse});
+                }
+            }
+
+            if (horse > 0) {
+                for (int i = 0 ; i < 8 ; i++) {
+                    int nr = r + horse_r[i];
+                    int nc = c + horse_c[i];
+                    if (isIn(nr, nc) && mat[nr][nc] == 0 && !visit[nr][nc][horse - 1]) {
+                        visit[nr][nc][horse - 1] = true;
+                        queue.add(new int[]{nr, nc, cnt + 1, horse - 1});
+                    }
+                }
+            }
+        }
+
+    }
+
+    static boolean isIn(int r, int c) {
+        return (0 <= r && r < H && 0 <= c && c < W);
+    }
 }
