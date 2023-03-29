@@ -52,7 +52,7 @@ public class Main {
                 break;
             }
         }
-        
+
         if (x + 1 <= N && y + 1 <= N && mat[y][x+1] == 0 && mat[y+1][x+1] == 0 && mat[y+1][x] == 0) {
             DFS(y + 1, x + 1, 2);
         }
