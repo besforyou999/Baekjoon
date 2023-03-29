@@ -6,52 +6,51 @@ import java.util.StringTokenizer;
 public class Main {
     static int N;
     static int mat[][];
-    static boolean [] visited;
+    static boolean [] visit;
     static int ANS = Integer.MAX_VALUE;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         N = Integer.parseInt(br.readLine());
         mat = new int[N][N];
 
-        for (int i = 0 ; i < N ; i++) {
+        for (int r = 0 ; r < N ; r++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 0 ; j < N ; j++) {
-                mat[i][j] = Integer.parseInt(st.nextToken());
+            for (int c = 0 ; c < N ; c++) {
+                mat[r][c] = Integer.parseInt(st.nextToken());
             }
         }
 
         for (int i = 0 ; i < N ; i++) {
-            visited = new boolean[N];
-            visited[i] = true;
-            dfs(i, i, 0);
+            visit = new boolean[N];
+            visit[i] = true;
+            back(i, i, 0);
         }
 
         System.out.println(ANS);
-
     }
 
-    static void dfs(int start, int at, int cost) {
+    static void back(int start, int idx, int cost) {
         if (allVisited()) {
-            if (mat[at][start] != 0) {
-                ANS = Math.min(ANS, cost + mat[at][start]);
+            if (mat[idx][start] != 0) {
+                ANS = Math.min(ANS, cost + mat[idx][start]);
             }
             return;
         }
 
         for (int i = 1 ; i < N ; i++) {
-            if (!visited[i] && mat[at][i] != 0) {
-                visited[i] = true;
-                dfs(start, i, cost + mat[at][i]);
-                visited[i] = false;
+            if (!visit[i] && mat[idx][i] != 0) {
+                visit[i] = true;
+                back(start, i, cost + mat[idx][i]);
+                visit[i] = false;
             }
         }
     }
 
     static boolean allVisited() {
-        for (int i = 0 ; i < N ; i++) {
-            if (!visited[i]) return false;
+        for (int i = 0 ; i < visit.length ; i++) {
+            if (!visit[i]) return false;
         }
         return true;
     }
+
 }
