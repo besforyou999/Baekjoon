@@ -1,80 +1,78 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringBuilder sb = new StringBuilder();
-	static StringTokenizer st;
+    static int mat[][];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        mat = new int[9][9];
 
-	static int map[][];
-	static ArrayList<int[]> list;
+        int cnt = 0;
 
-	static boolean flag = false;
+        for (int i = 0 ; i < 9 ; i++) {
+            String line = br.readLine();
+            for (int j = 0 ; j < 9 ; j++) {
+                mat[i][j] = line.charAt(j) - '0';
+                if (mat[i][j] != 0) cnt++;
+            }
+        }
 
-	public static void main(String[] args) throws IOException {
-		input();
-		dfs(0);
-		System.out.println(sb);
-	}
+        back(cnt, 0, 0);
 
-	public static void dfs(int depth) {
-		if (depth == list.size()) {
-			for (int i = 0; i < 9; i++) {
-				for (int j = 0; j < 9; j++) {
-					sb.append(map[i][j]);
-				}
-				sb.append("\n");
-			}
-			flag = true;
-			return;
-		}
-		if (flag) {
-			return;
-		}
-		boolean visited[] = new boolean[9 + 1];
-		int cur[] = list.get(depth);
+    }
 
-		for (int i = 0; i < 9; i++) { // 가로
-			visited[map[cur[0]][i]] = true;
-		}
+    public static void back(int cnt, int r, int c) {
+        if (cnt == 81) {
+            printMat();
+            System.exit(0);
+        }
 
-		for (int i = 0; i < 9; i++) { // 세로
-			visited[map[i][cur[1]]] = true;
-		}
+        while(mat[r][c] != 0 && r < 9) {
+            c++;
+            if (c == 9) {
+                r++;
+                c = 0;
+            }
+        }
 
-		int y = cur[0] / 3 * 3;
-		int x = cur[1] / 3 * 3;
+        for (int i = 1 ; i <= 9 ; i++) {
+            if (valid(r, c, i)) {
+                mat[r][c] = i;
+                back(cnt + 1, r, c);
+                mat[r][c] = 0;
+            }
+        }
 
-		for (int i = y; i < y + 3; i++) { // 네모 0 3 6
-			for (int j = x; j < x + 3; j++) {
-				visited[map[i][j]] = true;
-			}
-		}
+    }
 
-		for (int i = 1; i <= 9; i++) { // 방문안된거 후보 ㄱ
-			if (!visited[i]) {
-				map[cur[0]][cur[1]] = i;
-				dfs(depth + 1);
-				map[cur[0]][cur[1]] = 0;
-			}
-		}
-	}
+    public static boolean valid(int r, int c, int number) {
 
-	public static void input() throws IOException {
-		map = new int[9][9];
-		list = new ArrayList<>();
-		for (int i = 0; i < 9; i++) {
-			String str = br.readLine();
-			for (int j = 0; j < 9; j++) {
-				int temp = str.charAt(j) - 48;
-				map[i][j] = temp;
-				if (temp == 0) {
-					list.add(new int[] { i, j });
-				}
-			}
-		}
-	}
+        for (int i = 0 ; i < 9 ; i++) {
+            if (mat[r][i] == number || mat[i][c] == number) return false;
+        }
+
+        int R = (r / 3) * 3;
+        int C = (c / 3) * 3;
+
+        for (int i = 0 ; i < 3 ; i++) {
+            for (int j = 0 ; j < 3 ; j++) {
+                if (mat[R + i][C + j] == number) return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void printMat() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0 ; i < 9 ; i++) {
+            for (int j = 0 ; j < 9 ; j++) {
+                sb.append(mat[i][j]);
+            }
+            sb.append("\n");
+        }
+        System.out.print(sb);
+    }
 }
