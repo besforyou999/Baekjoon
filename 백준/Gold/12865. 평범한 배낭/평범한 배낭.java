@@ -1,38 +1,46 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N, K;
-    static int W[], V[], dp[][];
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
-        W = new int[N + 1];
-        V = new int[N + 1];
-        dp = new int[N + 1][K + 1];
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringBuilder sb = new StringBuilder();
+	static StringTokenizer st;
 
-        for (int i = 1 ; i <= N ; i++) {
-            st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            W[i] = a;
-            V[i] = b;
-        }
+	static int n, m;
+	static int dp[][];
+	static int items[][];
 
-        for (int i = 1 ; i <= N ; i++) {
-            for (int j = 1 ; j <= K ; j++) {
-                if (j >= W[i]) {
-                    dp[i][j] = Math.max(dp[i-1][j], dp[i-1][j - W[i]] + V[i]);
-                } else {
-                    dp[i][j] = dp[i-1][j];
-                }
-            }
-        }
+	public static void main(String[] args) throws IOException {
+		input();
+		for (int i = 1; i <= n; i++) {
+			for (int j = 1; j <= m; j++) {
+				dp[i][j] = dp[i - 1][j];
+				if (j - items[i][1] >= 0) {
+					dp[i][j] = Math.max(dp[i - 1][j], dp[i - 1][j - items[i][1]] + items[i][2]);
+				}
+			}
+		}
+		System.out.println(dp[n][m]);
+	}
 
-        System.out.println(dp[N][K]);
-    }
+	public static void input() throws IOException {
+		st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		dp = new int[n + 1][m + 1];
+		items = new int[n + 1][2 + 1];
+		for (int i = 1; i <= n; i++) {
+			st = new StringTokenizer(br.readLine());
+			int w = Integer.parseInt(st.nextToken());
+			int v = Integer.parseInt(st.nextToken());
+			items[i][1] = w;
+			items[i][2] = v;
+		}
+	}
 }
