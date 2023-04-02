@@ -56,28 +56,22 @@ public class Main {
 
         for (int r = 0 ; r < N ; r++) {
             for (int c = 0 ; c < M ; c++) {
-                if (mat[r][c] == 0 && !visit[r][c]) {
+                if (mat[r][c] == 0 && !visit[r][c]) 
                     bfs(visit, meltCoord, r, c);
-                }
             }
         }
 
         cheese -= meltCoord.size();
 
-        for (Coord coord : meltCoord) {
-            mat[coord.r][coord.c] = 0;
-        }
-
+        for (Coord coord : meltCoord) mat[coord.r][coord.c] = 0;
     }
 
     static void bfs(boolean [][] visit, ArrayList<Coord> coords, int r, int c) {
         boolean innerAir = true;
 
         ArrayList<Coord> candidates = new ArrayList<>();
-
         Queue<Coord> queue = new LinkedList<>();
         queue.add(new Coord(r, c));
-
         visit[r][c] = true;
 
         while(!queue.isEmpty()) {
@@ -89,7 +83,7 @@ public class Main {
                 int nr = cr + dr[i];
                 int nc = cc + dc[i];
 
-                if(!isIn(nr,nc)) innerAir = false;
+                if(!isIn(nr,nc)) innerAir = false; // 벽에 한곳이라도 닿으면 내부 공기가 아님
 
                 if (isIn(nr, nc) && !visit[nr][nc]) {
                     if (mat[nr][nc] == 0) { // 다음 흰칸
@@ -104,9 +98,7 @@ public class Main {
         }
 
         if (!innerAir) {
-            for(Coord coord : candidates) {
-                coords.add(coord);
-            }
+            coords.addAll(candidates); // 후보 좌표 모두 추가
         }
     }
 
