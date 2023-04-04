@@ -28,6 +28,7 @@ public class Main {
 
         int N = Integer.parseInt(br.readLine());
         st = new StringTokenizer(br.readLine());
+
         int dir = 1; // 1 : left, -1 : right
         for (int n = 0 ; n < N ; n++) {
             int height = Integer.parseInt(st.nextToken());
@@ -36,12 +37,7 @@ public class Main {
             } else
                 shootArrowFromRight(height);
 
-            //System.out.println("Matrix after shooting arrow");
-            //printMat();
             dropClusterIfExist();
-            //System.out.println();
-            //System.out.println("Matrix after dropping cluster");
-            //printMat();
 
             dir *= -1;
         }
@@ -83,10 +79,10 @@ public class Main {
 
     static void dropClusterIfExist() {
         boolean [][] connectedToGround = new boolean[R + 1][C + 1];
-
         for (int c = 1 ; c <= C ; c++) {
-            if (cave[R][c] == 'x' && !connectedToGround[R][c])
+            if (cave[R][c] == 'x' && !connectedToGround[R][c]) {
                 bfs(connectedToGround, R, c);
+            }
         }
         ArrayDeque<int[]> cluster = new ArrayDeque<>();
         ArrayDeque<int[]> clusterBottom = new ArrayDeque<>();
@@ -101,21 +97,10 @@ public class Main {
                 }
             }
         }
-        /*
-        System.out.println("cluster bottom");
-
-        for (int [] test : clusterBottom) {
-            System.out.println("r : " + test[0] + " " + "c : " + test[1]);
-        }
-        System.out.println();
-        */
 
         if (cluster.isEmpty()) return; // 공중에 떠있는 클러스터가 없으면 그대로 종료
 
-        /*
-            떨어질 높이 계산
-            클러스터 바닥과 x 또는 지면과의 최단 거리가 떨어질 높이
-        */
+        // 떨어질 높이 계산. 클러스터 바닥과 x 또는 지면과의 최단 거리가 떨어질 높이
 
         int fallHeight = 10000;
 
@@ -126,24 +111,18 @@ public class Main {
             for (int row = r + 1 ; row <= R ; row++) {
                 if (cave[row][c] == 'x' && connectedToGround[row][c]) {
                     fallHeight = Math.min(fallHeight, height);
-                    //System.out.println("r : " + r + " " + "c : " + c + "height : " + height);
                     break;
                 } else if (cave[row][c] == '.' && row == R) {
                     fallHeight = Math.min(fallHeight, height + 1);
-                    //System.out.println("r : " + r + " " + "c : " + c + "height : " + height);
                     break;
                 }
                 height++;
             }
         }
 
-        //System.out.println("Fall height : " + fallHeight);
-
         for (int [] coord : cluster) {
             int r = coord[0];
             int c = coord[1];
-            //System.out.println("cluster coords");
-            //System.out.println("r : " + r + " " + "c : " + c);
             cave[r][c] = '.';
         }
 
@@ -152,7 +131,6 @@ public class Main {
             int c = coord[1];
             cave[r][c] = 'x';
         }
-
 
     }
 
@@ -173,7 +151,6 @@ public class Main {
             }
         }
     }
-
 
     static boolean isIn(int r, int c) {
         return (r >= 1 && r <= R && c >= 1 && c <= C);
