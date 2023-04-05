@@ -17,14 +17,9 @@ class Point {
 
 public class Main {
 
-    static final String HAPPY = "happy";
-    static final String SAD = "sad";
-
-    static Point start;
-    static Point end;
-
+    static final String HAPPY = "happy", SAD = "sad";
+    static Point start, end;
     static int n;
-
     static ArrayList<Point> points;
 
     public static void main(String[] args) throws IOException {
@@ -34,7 +29,6 @@ public class Main {
         for (int t = 0 ; t < T ; t++) {
 
             n = Integer.parseInt(br.readLine());
-
             points = new ArrayList<>();
 
             StringTokenizer st = new StringTokenizer(br.readLine());
@@ -56,10 +50,9 @@ public class Main {
             end = new Point(r, c, n + 1);
             points.add(end);
 
-            boolean result = bfs();
-            if (result) {
+            if (bfs())
                 System.out.println(HAPPY);
-            } else
+            else
                 System.out.println(SAD);
         }
     }
@@ -82,12 +75,17 @@ public class Main {
         }
         return visit[n + 1];
     }
-
+    
     static int distance(Point p1, Point p2) {
-        return distance_between_to_num(p1.r, p2.r) + distance_between_to_num(p1.c, p2.c);
+        return Math.abs(p1.r - p2.r) + Math.abs(p1.c - p2.c);
     }
-
-    static int distance_between_to_num(int n1, int n2) {
+    
+    /*
+    static int distance(Point p1, Point p2) {
+        return cmpToNum(p1.r, p2.r) + cmpToNum(p1.c, p2.c);
+    }
+    */
+    static int cmpToNum(int n1, int n2) {
         if (n1 > 0 && n2 > 0) return Math.abs(n1 - n2);
         else if (n1 > 0 && n2 < 0) return n1 - n2;
         else if (n1 < 0 && n2 > 0) return n2 - n1;
