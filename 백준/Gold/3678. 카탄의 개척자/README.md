@@ -24,7 +24,7 @@
 
 <p>아래 그림은 어떻게 나선 형태로 진행하는지와, 어떤 자원을 선택하는지를 나타낸 그림이다. n번째로 채우는 타일에 어떤 자원을 선택하는지 고르는 프로그램을 작성하시오. (n은 1부터 시작한다)</p>
 
-<p><img alt="" src="https://www.acmicpc.net/upload/images/settler.png" style="height:280px; width:329px"></p>
+<p><img alt="" src="" style="height:280px; width:329px"></p>
 
 ### 입력 
 
