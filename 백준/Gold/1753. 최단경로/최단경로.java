@@ -1,78 +1,67 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-class Edge implements Comparable<Edge>{
-    int node;
-    int distance;
-
-    Edge(int node, int distance) {
-        this.node = node;
-        this.distance = distance;
-    }
-
-    @Override
-    public int compareTo(Edge o) {
-        return Integer.compare(this.distance, o.distance);
-    }
-}
-
 public class Main {
-    static PriorityQueue<Edge>[] edges;
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringBuilder sb = new StringBuilder();
+	static StringTokenizer st;
+	static int v, e, start;
+	static ArrayList<int[]>[] list;
+	static int answer[];
+	static boolean visited[];
 
-    static int V, E, K;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		v = Integer.parseInt(st.nextToken());
+		e = Integer.parseInt(st.nextToken());
+		start = Integer.parseInt(br.readLine());
+		list = new ArrayList[v + 1];
+		answer = new int[v + 1];
+		visited = new boolean[v + 1];
+		for (int i = 0; i < v + 1; i++) {
+			answer[i] = 2147483647;
+		}
+		for (int i = 0; i < e; i++) {
+			st = new StringTokenizer(br.readLine());
+			int u = Integer.parseInt(st.nextToken());
+			int v = Integer.parseInt(st.nextToken());
+			int w = Integer.parseInt(st.nextToken());
+			if (list[u] == null) {
+				list[u] = new ArrayList<>();
+			}
+			list[u].add(new int[] { v, w });
+		}
+		dij();
+		for (int i = 1; i <= v; i++) {
+			if (answer[i] != 2147483647) {
+				sb.append(answer[i]).append("\n");
+			} else {
+				sb.append("INF").append("\n");
+			}
+		}
+		System.out.println(sb);
+	}
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
+	public static void dij() {
+		PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+		pq.add(new int[] { start, 0 });
+		answer[start] = 0;
+		while (!pq.isEmpty()) {
+			int now[] = pq.poll(); // now[0] == start, now[1] == w
+			if (list[now[0]] == null) {
+				continue;
+			}
+			for (int t[] : list[now[0]]) {
+				if (answer[t[0]] > now[1] + t[1]) {
+					answer[t[0]] = now[1] + t[1];
+					pq.add(new int[] { t[0], answer[t[0]] });
+				}
+			}
+		}
+	}
 
-        V = Integer.parseInt(st.nextToken());
-        E = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(br.readLine());
-
-        edges = new PriorityQueue[V + 1];
-        for (int i = 0 ; i <= V ; i++) edges[i] = new PriorityQueue<Edge>();
-
-        for (int i = 0 ; i < E ; i++) {
-            st = new StringTokenizer(br.readLine());
-            int u = Integer.parseInt(st.nextToken());
-            int v = Integer.parseInt(st.nextToken());
-            int w = Integer.parseInt(st.nextToken());
-            edges[u].add(new Edge(v, w));
-        }
-
-        int [] distance = new int[V + 1];
-        Arrays.fill(distance, -1);
-        distance[K] = 0;
-
-        while(!edges[K].isEmpty()) {
-            Edge edge = (Edge)edges[K].poll();
-            int node = edge.node;
-            int dist = edge.distance;
-
-            if (distance[node] != -1) continue;
-
-            distance[node] = dist;
-
-            for (Edge next : edges[node]) {
-                edges[K].add(new Edge(next.node, dist + next.distance));
-            }
-        }
-
-        StringBuilder sb = new StringBuilder();
-
-        for (int v = 1 ; v <= V ; v++) {
-            if (distance[v] == -1) {
-                sb.append("INF");
-            } else {
-                sb.append(distance[v]);
-            }
-            sb.append("\n");
-        }
-
-        System.out.print(sb);
-    }
 }
