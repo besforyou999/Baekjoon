@@ -1,97 +1,123 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.StringTokenizer;
 
-// 17136
-class Point {
-    int r, c;
-    Point (int r, int c) {
-        this.r = r;
-        this.c = c;
-    }
-}
-
 public class Main {
-    static boolean found = false;
-    static int MAX = 1000000;
-    static int ANS = MAX, SIZE = 10, oneCnt = 0;
-    static int mat[][];
-    static int [] papers;
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        mat = new int[SIZE][SIZE];
-        for (int i = 0 ; i < SIZE ; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int j = 0 ; j < SIZE ; j++) {
-                int val = Integer.parseInt(st.nextToken());
-                mat[i][j] = val;
-                if (val == 1) oneCnt++;
-            }
-        }
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringBuilder sb = new StringBuilder();
+	static StringTokenizer st;
 
-        papers = new int[6];
-        for (int i = 1 ; i <= 5 ; i++) papers[i] = 5;
+	static int map[][];
+	static int count, min;
+	static int c5, c4, c3, c2, c1;
 
-        back(0, 0, 0);
+	public static void main(String[] args) throws Exception {
+		input();
+		dfs(0, 0);
+		if (min == 2147483647) {
+			System.out.println(-1);
+		} else {
+			System.out.println(min);
+		}
+	}
 
-        if (ANS == MAX) ANS = -1;
-        System.out.println(ANS);
-    }
+	static boolean flag = false;
 
-    static void back(int r, int c , int cnt) {
-        if (c == SIZE) {
-            back(r + 1, 0, cnt);
-            return;
-        }
+	public static void dfs(int subcount, int ans) {
+		if (count == subcount) {
+			min = Math.min(min, ans);
+			return;
+		}
+		if (c1 < 0 || c2 < 0 || c3 < 0 || c4 < 0 || c5 < 0) {
+			return;
+		}
+		if (min <= ans) {
+			return;
+		}
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				if (map[i][j] == 1) {
+					if (c5 > 0 && check(i, j, 5)) {
+						c5--;
+						visit(i, j, 5, 2);
+						dfs(subcount + 25, ans + 1);
+						visit(i, j, 5, 1);
+						c5++;
+					}
+					if (c4 > 0 && check(i, j, 4)) {
+						c4--;
+						visit(i, j, 4, 2);
+						dfs(subcount + 16, ans + 1);
+						visit(i, j, 4, 1);
+						c4++;
+					}
+					if (c3 > 0 && check(i, j, 3)) {
+						c3--;
+						visit(i, j, 3, 2);
+						dfs(subcount + 9, ans + 1);
+						visit(i, j, 3, 1);
+						c3++;
+					}
+					if (c2 > 0 && check(i, j, 2)) {
+						c2--;
+						visit(i, j, 2, 2);
+						dfs(subcount + 4, ans + 1);
+						visit(i, j, 2, 1);
+						c2++;
+					}
+					if (c1 > 0 && check(i, j, 1)) {
+						c1--;
+						visit(i, j, 1, 2);
+						dfs(subcount + 1, ans + 1);
+						visit(i, j, 1, 1);
+						c1++;
+					}
+					return;
+				}
+			}
+		}
+	}
 
-        if (r == SIZE) {
-            ANS = Math.min(ANS, cnt);
-            return;
-        }
+	public static boolean check(int y, int x, int c) {
+		for (int i = 0; i < c; i++) {
+			for (int j = 0; j < c; j++) {
+				if (y + i == 10 || x + j == 10) {
+					return false;
+				}
+				if (map[y + i][x + j] == 0 || map[y + i][x + j] == 2) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
-        if (mat[r][c] == 0) {
-            back(r, c + 1, cnt);
-            return;
-        }
+	public static void visit(int y, int x, int c, int recover) {
+		for (int i = 0; i < c; i++) {
+			for (int j = 0; j < c; j++) {
+				map[y + i][x + j] = recover;
+			}
+		}
+	}
 
-        for (int len = 5 ; len >= 1 ; len--) {
-            if (papers[len] == 0 || r + len > SIZE || c + len > SIZE) continue;
-
-            // len 길이의 색종이 붙일 공간이 있는지 확인
-            boolean available = true;
-            for (int i = 0 ; i < len ; i++) {
-                for (int j = 0 ; j < len ; j++) {
-                    if (mat[r + i][c + j] == 0) {
-                        available = false;
-                        break;
-                    }
-                }
-                if (!available) break;
-            }
-
-            if (!available) continue;
-
-            for (int i = 0 ; i < len ; i++) {
-                for (int j = 0 ; j < len ; j++) {
-                    mat[r + i][c + j] = 0;
-                }
-            }
-
-            papers[len]--;
-            back(r, c + len, cnt + 1);
-
-            papers[len]++;
-
-            for (int i = 0 ; i < len ; i++) {
-                for (int j = 0 ; j < len ; j++) {
-                    mat[r + i][c + j] = 1;
-                }
-            }
-
-        }
-    }
-
+	public static void input() throws IOException {
+		count = 0;
+		map = new int[10][10];
+		c5 = 5;
+		c4 = 5;
+		c3 = 5;
+		c2 = 5;
+		c1 = 5;
+		min = 2147483647;
+		for (int i = 0; i < 10; i++) {
+			st = new StringTokenizer(br.readLine());
+			for (int j = 0; j < 10; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+				if (map[i][j] == 1) {
+					count++;
+				}
+			}
+		}
+	}
 }
