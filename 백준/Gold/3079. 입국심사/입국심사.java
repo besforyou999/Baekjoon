@@ -14,13 +14,14 @@ public class Main {
 
         Ti = new int[N];
 
-        long lp = 0L, rp = 0, min = Long.MAX_VALUE, mid = 0;
+        long lp = 0, rp = 0, min = Long.MAX_VALUE, mid = 0;
         for (int i = 0 ; i < N ; i++) {
             Ti[i] = Integer.parseInt(br.readLine());
             min = Math.min(Ti[i], min);
         }
 
         rp = min * M;
+
         while (lp < rp) {
             mid = (lp + rp) / 2;
             long cnt = 0;
