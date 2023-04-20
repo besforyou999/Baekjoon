@@ -1,75 +1,58 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.PriorityQueue;
-import java.util.Queue;
-import java.util.StringTokenizer;
+/*
+import java.io.*;
 
 public class Main {
-	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	static StringBuilder sb = new StringBuilder();
-	static StringTokenizer st;
+    public static void main(String [] args) throws IOException {
 
-	static int n, m;
-	static int adj[];
+    }
+}
+*/
+import java.io.*;
+import java.util.*;
 
-	static ArrayList<Integer> list[];
-	static ArrayList<Integer> ans;
+public class Main {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        StringTokenizer st = new StringTokenizer(br.readLine());
 
-	public static void main(String[] args) throws IOException {
-		input();
-		tsort();
-		for (int i = 0; i < ans.size(); i++) {
-			sb.append(ans.get(i)).append(" ");
-		}
-		System.out.println(sb);
-	}
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
 
-	public static void tsort() {
-		PriorityQueue<Integer> pq = new PriorityQueue<>();
-		for (int i = 1; i <= n; i++) {
-			if (adj[i] == 0) {
-				pq.add(i);
-			}
-		}
-		while (!pq.isEmpty()) {
-			int size = pq.size();
-			while (size-- > 0) {
-				int now = pq.poll();
-				ans.add(now);
-				if (list[now] == null) {
-					continue;
-				}
-				for (int i = 0; i < list[now].size(); i++) {
-					int next = list[now].get(i);
-					if (--adj[next] == 0) {
-						pq.add(next);
-					}
-				}
-			}
-		}
-	}
+        int[] indegree = new int[N+1];
+        ArrayList<ArrayList<Integer>> a = new ArrayList<>();
 
-	public static void input() throws IOException {
-		st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
+        for (int i = 0 ; i <= N ; i++) {
+            a.add(new ArrayList<>());
+        }
 
-		list = new ArrayList[n + 1];
-		adj = new int[n + 1];
-		ans = new ArrayList<>();
+        for (int i = 0 ; i < M ; i++) {
+            st = new StringTokenizer(br.readLine());
+            int first   = Integer.parseInt(st.nextToken());
+            int last    = Integer.parseInt(st.nextToken());
 
-		for (int i = 0; i < m; i++) {
-			st = new StringTokenizer(br.readLine());
-			int a = Integer.parseInt(st.nextToken());
-			int b = Integer.parseInt(st.nextToken());
-			if (list[a] == null) {
-				list[a] = new ArrayList<>();
-			}
-			list[a].add(b);
-			adj[b]++;
-		}
-	}
+            a.get(first).add(last);
+            indegree[last]++;
+        }
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+
+        for (int i = 1 ; i <= N ; i++) {
+            if (indegree[i] == 0) pq.offer(i);
+        }
+
+        while (pq.isEmpty() == false) {
+            int now = pq.poll();
+            bw.write(now + " ");
+
+            for (int next : a.get(now)) {
+                indegree[next]--;
+
+                if (indegree[next] == 0) pq.offer(next);
+            }
+        }
+
+        bw.flush();
+        bw.close();
+    }
 }
