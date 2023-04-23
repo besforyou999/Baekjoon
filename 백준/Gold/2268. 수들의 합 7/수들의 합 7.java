@@ -9,8 +9,8 @@ public class Main {
     static long tree[];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
 
@@ -21,7 +21,6 @@ public class Main {
 
         for (int m = 0 ; m < M ; m++) {
             st = new StringTokenizer(br.readLine());
-
             int cmd = Integer.parseInt(st.nextToken());
             int i = Integer.parseInt(st.nextToken());
             int j = Integer.parseInt(st.nextToken());
@@ -34,15 +33,17 @@ public class Main {
 
             if (cmd == 0) {
                 sb.append(sum(1, N, 1, i, j) + "\n");
-            } else if (cmd == 1) {
+            } else {
                 update(1, N, 1, i, j);
             }
         }
 
         System.out.println(sb);
     }
+
     /*
-        node가 담당하고 있는 구간이 [start, end] / 합을 구해야하는 구간이 [left, right]
+        node의 범위 : start, end
+        누적합 범위 : left, right
      */
     static long sum(int start, int end, int node, int left, int right) {
         if (right < start || end < left) return 0;
@@ -54,7 +55,13 @@ public class Main {
         return sum(start, mid, node * 2, left, right) + sum(mid + 1, end, node * 2 + 1, left, right);
     }
 
-    static long update(int start, int end, int node, int index, int val) {
+    /*
+        node의 범위 : start, end
+        변경할 인덱스 : index
+        변경할 값 : val
+     */
+
+    static long update (int start, int end, int node, int index, int val) {
         if (index < start || end < index)
             return tree[node];
 
@@ -64,5 +71,6 @@ public class Main {
         int mid = (start + end) / 2;
 
         return tree[node] = update(start, mid, node * 2, index, val) + update(mid + 1, end, node * 2 + 1, index, val);
+
     }
 }
