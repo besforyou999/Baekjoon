@@ -4,66 +4,87 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int N, M, K;
+    static long arr[], tree[];
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        K = Integer.parseInt(st.nextToken());
 
-        int N = Integer.parseInt(st.nextToken());
-        int M = Integer.parseInt(st.nextToken());
-        int K = Integer.parseInt(st.nextToken());
+        arr = new long[N + 1];
 
-        int depth = 0;
-        while (Math.pow(2, depth) < N) {
-            depth++;
-        }
-        depth += 1;
-
-        int arraySize = (int)Math.pow(2, depth);
-        int startIndex = (int)Math.pow(2, depth - 1);
-
-        long [] tree = new long[arraySize];
-
-        for (int i = 0 ; i < N ; i++) {
-            st = new StringTokenizer(br.readLine());
-            long in = Long.parseLong(st.nextToken());
-            tree[startIndex + i] = in;
+        for (int n = 1 ; n <= N ; n++) {
+            arr[n] = Long.parseLong(br.readLine());
         }
 
-        // 초기 트리에 자식들의 합 채우기
-        for (int i = startIndex - 1 ; i >= 1 ; i--) {
-            tree[i] = tree[i * 2] + tree[i * 2 + 1];
-        }
+        int k = (int)Math.ceil((Math.log(N) / Math.log(2))) + 1;
+
+        int size = (int)Math.pow(2, k);
+        tree = new long[size];
+
+        init(1, N, 1);
 
         StringBuilder sb = new StringBuilder();
 
         for (int i = 0 ; i < M + K ; i++) {
             st = new StringTokenizer(br.readLine());
-            int op = Integer.parseInt(st.nextToken());
-            long x = Long.parseLong(st.nextToken());
-            long y = Long.parseLong(st.nextToken());
 
-            // x번째 수를 y로 변경
-            if (op == 1) {
-                int targetIndex = (int) (startIndex + x - 1);
-                long diff = y - tree[targetIndex];
-                while (targetIndex > 0) {
-                    tree[targetIndex] += diff;
-                    targetIndex /= 2;
-                }
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            long c = Long.parseLong(st.nextToken());
+
+            if (a == 1) {
+                long diff = c - arr[b];
+                arr[b] = c;
+                update(1, N, 1, b, diff);
             } else {
-                int s = (int)x + startIndex - 1;
-                int e = (int)y + startIndex - 1;
-                long ans = 0;
-                while (s <= e) {
-                    if (s % 2 == 1) ans += tree[s];
-                    if (e % 2 == 0) ans += tree[e];
-                    s = (s + 1) / 2;
-                    e = (e - 1) / 2;
-                }
-                sb.append(ans).append("\n");
+                sb.append(sum(1, N, 1, b, (int)c)).append("\n");
             }
         }
 
-        System.out.print(sb);
+        System.out.println(sb);
+    }
+
+    public static long init(int start, int end, int node) {
+        if (start == end) {
+            return tree[node] = arr[start];
+        }
+
+        int mid = (start + end) / 2;
+
+        return tree[node] = init(start, mid, node * 2) + init(mid + 1, end, node * 2 + 1);
+    }
+
+    public static long sum(int start, int end, int node, int left, int right) {
+        if (right < start || end < left) {
+            return 0;
+        }
+
+        if (left <= start && end <= right) {
+            return tree[node];
+        }
+
+        int mid = (start + end) / 2;
+
+        return sum(start, mid, node * 2, left, right) + sum(mid + 1, end, node * 2 + 1, left, right);
+    }
+
+    // idx : 수정하고자 하는 노드
+    public static void update(int start, int end, int node, int idx, long diff) {
+        if (idx < start || end < idx) {
+            return;
+        }
+
+        tree[node] += diff;
+
+        if (start == end) {
+            return;
+        }
+
+        int mid = (start + end) / 2;
+        update(start, mid, node * 2, idx, diff);
+        update(mid + 1, end, node * 2 + 1, idx, diff);
     }
 }
