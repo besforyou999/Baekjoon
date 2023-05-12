@@ -1,76 +1,89 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
-import java.io.*;
 
 class Edge implements Comparable<Edge> {
-    int e, s;
+    int from, to;
     int weight;
-    public Edge(int e, int s, int w) {
-        this.e = e;
-        this.s = s;
+    Edge(int f, int t, int w) {
+        this.from = f;
+        this.to = t;
         this.weight = w;
     }
+
     @Override
-    public int compareTo(Edge e1) {
-        return this.weight - e1.weight;
+    public int compareTo(Edge o) {
+        return Integer.compare(weight, o.weight);
     }
 }
 
-class Main {
-    public static int V, E;
-    public static int [] parent;
-    public static ArrayList<Edge> edges;
-    public static void main(String[] args) throws Exception {
+public class Main {
+    static int V, E;
+    static ArrayList<Edge> list;
+    static int parent[];
+    public static void main(String[] args) throws IOException {
+
+        list = new ArrayList<>();
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
+
         V = Integer.parseInt(st.nextToken());
         E = Integer.parseInt(st.nextToken());
 
-        edges = new ArrayList<>();
-
         parent = new int[V + 1];
-        for (int i = 0 ; i < V + 1 ; i++) {
-            parent[i] = i;
+        for (int v = 1 ; v <= V ; v++) {
+            parent[v] = v;
         }
 
-        for (int i = 0 ; i < E ; i++) {
+        for (int v = 0 ; v < E ; v++) {
             st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            int w = Integer.parseInt(st.nextToken());
-            edges.add(new Edge(a, b, w));
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+            int C = Integer.parseInt(st.nextToken());
+            list.add(new Edge(A, B, C));
         }
 
-        Collections.sort(edges);
+        Collections.sort(list);
 
-        int cost = 0;
-        for (Edge e : edges) {
-            if (!sameParent(e.e, e.s)) {
-                union(e.e, e.s);
-                cost += e.weight;
+        int cost = 0, connection = 0;
+
+        for (Edge edge : list) {
+            if (!sameParent(edge.from, edge.to)) {
+                union(edge.from, edge.to);
+                cost += edge.weight;
+                connection++;
             }
+
+            if (connection == V - 1) break;
         }
-        System.out.print(cost);
+
+        System.out.println(cost);
+
     }
 
-    public static int find_root(int x) {
+    static int findRoot(int x) {
         if (x == parent[x]) {
             return x;
+        } else {
+            return parent[x] = findRoot(parent[x]);
         }
-        return parent[x] = find_root(parent[x]);
     }
 
-    public static void union(int x, int y) {
-        x = find_root(x);
-        y = find_root(y);
+    static void union(int x, int y) {
+        x = findRoot(x);
+        y = findRoot(y);
         if (x != y) {
             if (x < y) {
                 parent[y] = x;
-            } else
+            } else {
                 parent[x] = y;
+            }
         }
     }
 
-    public static boolean sameParent(int x, int y) {
-        return find_root(x) == find_root(y);
+    static boolean sameParent(int x, int y) {
+        return findRoot(x) == findRoot(y);
     }
 }
