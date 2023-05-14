@@ -2,13 +2,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 public class Main {
+    static int N;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        int N = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
@@ -18,7 +18,8 @@ public class Main {
         for (int i = 0 ; i < N ; i++) {
             int val = Integer.parseInt(st.nextToken());
             int len = ans.size();
-            if (val > ans.get(len - 1)) {
+
+            if (ans.get(len - 1) < val) {
                 ans.add(val);
             } else {
                 int lp = 1, rp = len - 1;
