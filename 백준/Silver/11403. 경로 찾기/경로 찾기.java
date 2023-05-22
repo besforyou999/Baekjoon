@@ -4,34 +4,34 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int N;
-    static int[][] mat;
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
-        mat = new int[N + 1][N + 1];
+        int N = Integer.parseInt(br.readLine());
 
-        for (int r = 0 ; r < N ; r++) {
+        int [][]map = new int[N + 1][N + 1];
+
+        for (int r = 1 ; r <= N ; r++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            for (int c = 0 ; c < N ; c++) {
-                mat[r + 1][c + 1] = Integer.parseInt(st.nextToken());
+            for (int c = 1 ; c <= N ; c++) {
+                map[r][c] = Integer.parseInt(st.nextToken());
             }
         }
 
         for (int k = 1 ; k <= N ; k++) {
             for (int i = 1 ; i <= N ; i++) {
                 for (int j = 1 ; j <= N ; j++) {
-                    if (mat[i][k] == 1 && mat[k][j] == 1) {
-                        mat[i][j] = 1;
+                    if (map[i][k] == 1 && map[k][j] == 1) {
+                        map[i][j] = 1;
                     }
                 }
             }
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 1 ; i <= N ; i++) {
-            for (int j = 1 ; j <= N ; j++) {
-                sb.append(mat[i][j] + " ");
+
+        for (int r = 1 ; r <= N ; r++) {
+            for (int c = 1 ; c <= N ; c++) {
+                sb.append(map[r][c]).append(" ");
             }
             sb.append("\n");
         }
