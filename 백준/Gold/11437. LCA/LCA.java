@@ -6,21 +6,22 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
-    static int n, m;
+    static int N, M;
     static int [] parent, depth;
     static List<List<Integer>> list;
+    static StringTokenizer st;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
 
-        n = Integer.parseInt(br.readLine());
+        N = Integer.parseInt(br.readLine());
 
         list = new ArrayList<>();
-        for (int i = 0 ; i <= n ; i++) {
+        for (int i = 0 ; i <= N ; i++) {
             list.add(new ArrayList<>());
         }
 
-        for (int i = 0 ; i < n - 1 ; i++) {
+        for (int i = 0 ; i < N - 1 ; i++) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
@@ -28,15 +29,14 @@ public class Main {
             list.get(v).add(u);
         }
 
-        parent = new int[n + 1];
-        depth = new int[n + 1];
+        parent = new int[N + 1];
+        depth = new int[N + 1];
 
-        // 루트노드 1, depth 1을 시작으로 각 정점들의 depth를 구한다.
         dfs(1, 1);
 
-        m = Integer.parseInt(br.readLine());
+        M = Integer.parseInt(br.readLine());
 
-        for (int i = 0 ; i < m ; i++) {
+        for (int i = 0 ; i < M ; i++) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
@@ -54,14 +54,12 @@ public class Main {
                 a = parent[a];
             }
         } else if (aDepth < bDepth) {
-            while( aDepth != bDepth) {
+            while (aDepth != bDepth) {
                 bDepth--;
                 b = parent[b];
             }
         }
 
-        // 그 이후에 depth를 똑같이 증가시키다가
-        // 만난 같은 정점이 가장 가까운 공통 조상이 된다.
         while (a != b) {
             a = parent[a];
             b = parent[b];
@@ -73,8 +71,7 @@ public class Main {
     static void dfs(int from, int cnt) {
         depth[from] = cnt++;
         for (int next : list.get(from)) {
-            // depth가 0이 아니면 이미 depth를 구한 노드이다.
-            if (depth[next] != 0 ) continue;
+            if (depth[next] != 0) continue;
             dfs(next, cnt);
             parent[next] = from;
         }
