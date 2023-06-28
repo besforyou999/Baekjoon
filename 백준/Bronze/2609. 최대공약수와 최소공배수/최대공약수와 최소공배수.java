@@ -1,22 +1,30 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
-	public static void main(String [] args) throws IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		int one = Integer.parseInt(st.nextToken());
-		int two = Integer.parseInt(st.nextToken());
-		int div = gcd(one, two);
-		int mult = (one * two) / div;
-		System.out.println(div);
-		System.out.println(mult);
-	}
-	
-	public static int gcd(int p, int q) {
-		if(q == 0) return p;
-		return gcd(q, p % q);
-	}
+
+    static StringTokenizer st;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        st = new StringTokenizer(br.readLine());
+
+        int one = Integer.parseInt(st.nextToken());
+        int two = Integer.parseInt(st.nextToken());
+
+        int multi = one * two;
+        int g = gcd(one, two);
+
+        System.out.println(g);
+        System.out.println(multi/g);
+    }
+
+    public static int gcd(int a, int b) {
+        if (b == 0)
+            return a;
+        return gcd(b, a % b);
+    }
 }
