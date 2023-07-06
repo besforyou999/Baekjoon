@@ -1,32 +1,34 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Solution {
 
     static StringTokenizer st;
     static int V, E, A, B;
+
     static Node [] nodes;
 
     public static void main(String[] args) throws IOException {
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int T = Integer.parseInt(br.readLine());
 
         for (int tc = 1 ; tc <= T ; tc++) {
+
             st = new StringTokenizer(br.readLine());
             V = Integer.parseInt(st.nextToken());
             E = Integer.parseInt(st.nextToken());
             A = Integer.parseInt(st.nextToken());
             B = Integer.parseInt(st.nextToken());
 
-            st = new StringTokenizer(br.readLine());
-
             nodes = new Node[V + 1];
-            for (int v= 0 ; v < V + 1 ; v++)
+            for (int v = 0 ; v < V + 1 ; v++)
                 nodes[v] = new Node();
+
+            st = new StringTokenizer(br.readLine());
 
             for (int e = 0 ; e < E ; e++) {
                 int p = Integer.parseInt(st.nextToken());
@@ -41,38 +43,40 @@ public class Solution {
             traverse(A, ancestorA);
             traverse(B, ancestorB);
 
-            int root = 0;
+            int lca = 0;
 
             for (int i = 0 ; i < ancestorA.size() ; i++) {
-                if (!ancestorA.get(i).equals(ancestorB.get(i))) break;
-                root = ancestorA.get(i);
+                if(!ancestorA.get(i).equals(ancestorB.get(i))) break;
+                lca = ancestorA.get(i);
             }
 
-            System.out.printf("#%d %d %d\n", tc, root, lca(root));
+            System.out.printf("#%d %d %d\n", tc, lca, treeSize(lca));
         }
+
+    }
+
+    public static int treeSize(int root) {
+        int res = 1;
+        for (int child : nodes[root].children) {
+            res += treeSize(child);
+        }
+        return res;
     }
 
     public static void traverse(int idx, ArrayList<Integer> ancestor) {
         int parent = nodes[idx].parent;
+
         if (parent != 0)
             traverse(parent, ancestor);
+
         ancestor.add(idx);
     }
 
-    public static int lca(int idx) {
-        int res = 1;
-        for (int child : nodes[idx].children)
-            res += lca(child);
-        return res;
-    }
-
     public static class Node {
-
         int parent;
         ArrayList<Integer> children;
-
         Node() {
-            parent = 0;
+            this.parent = 0;
             children = new ArrayList<>();
         }
     }
