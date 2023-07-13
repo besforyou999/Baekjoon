@@ -58,7 +58,9 @@ class Solution {
             }
 
             mostChosenNumber = Math.max(mostChosenNumber, cnt);
-            patternCnt.put(new String(rec), cnt);
+            // 최소 2명 이상 손님에게서 주문되어야 함
+            if (cnt > 1) 
+                patternCnt.put(new String(rec), cnt);
             return;
         }
 
