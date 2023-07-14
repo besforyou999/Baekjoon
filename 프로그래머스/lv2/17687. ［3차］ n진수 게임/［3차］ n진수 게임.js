@@ -1,36 +1,39 @@
-function makeString(len, n) {
-    let idx = 0;
-    let str = "";
+const buildOrderString = (n, t, m) => {
+    let answer = '', number = 0;
 
-    while ( str.length <= len ) {
-        let current = idx.toString(n);
-        str += current.toUpperCase();
-        idx += 1;
+    while (answer.length <= t * m) {
+        let buffer = number.toString(n);
+
+        for (let ch of buffer) answer += ch;
+        
+        number++;
     }
-
-    return str;
-}
-
-function makeAnswerString(str, t, m, p) {
-    let ans = "";
-
-    while ( ans.length < t && p <= str.length ) {
-        ans += str[p - 1];
-        p += m;
-    }
-
-    return ans;
-}
-
-function solution(n, t, m, p) {
-    let answer = '';
-
-    const needed_len = m * t; 
-
-    const str = makeString(needed_len, n);
-
-
-    answer = makeAnswerString(str, t, m, p);
 
     return answer;
 }
+
+const buildAnswerString = (order, t, m, p) => {
+    let answer = '', idx = p;
+
+    while (idx < order.length && answer.length < t) {
+        let ch = order[idx - 1];
+
+        if (ch >= 'a' && ch <= 'z') {
+            ch = String(ch).toUpperCase();
+        }
+
+        answer += ch;
+        idx += m;
+    }
+
+    return answer;
+}
+
+
+
+const solution = (n, t, m, p) => {
+    let order = buildOrderString(n, t, m);
+    return buildAnswerString(order, t, m, p);
+}
+
+
