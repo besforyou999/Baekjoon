@@ -5,36 +5,46 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static int N;
+    static int [] arr;
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         N = Integer.parseInt(br.readLine());
+        arr = new int[N + 1];
+
+        ArrayList<Integer> seq = new ArrayList<>();
+        seq.add(-2_000_000_000);
 
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        ArrayList<Integer> ans = new ArrayList<>();
-        ans.add(Integer.MIN_VALUE);
+        for (int n = 1 ; n < N + 1 ; n++) {
 
-        for (int i = 0 ; i < N ; i++) {
-            int val = Integer.parseInt(st.nextToken());
-            int len = ans.size();
+            int value = Integer.parseInt(st.nextToken());
+            int len = seq.size();
 
-            if (ans.get(len - 1) < val) {
-                ans.add(val);
-            } else {
-                int lp = 1, rp = len - 1;
-                while (lp < rp) {
-                    int mid = (lp + rp) / 2;
-                    if (ans.get(mid) < val) {
-                        lp = mid + 1;
-                    } else {
-                        rp = mid;
-                    }
-                }
-                ans.set(rp, val);
-            }
+            if (value > seq.get(len - 1))
+                seq.add(value);
+            else
+                insertNumber(seq, value, len);
         }
 
-        System.out.println(ans.size() - 1);
+        System.out.println(seq.size() - 1);
+    }
+
+    public static void insertNumber(ArrayList<Integer> seq, int number, int len) {
+        int lp = 0, rp = len - 1;
+
+        while (lp < rp) {
+            int mid = (lp + rp) / 2;
+            if (seq.get(mid) < number)
+                lp = mid + 1;
+            else
+                rp = mid;
+        }
+
+        seq.set(rp, number);
     }
 }
