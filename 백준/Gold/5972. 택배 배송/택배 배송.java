@@ -9,14 +9,11 @@ import java.util.StringTokenizer;
 public class Main {
 
     static class Node implements Comparable<Node> {
-
         int dest, cost;
-
         Node (int d, int c) {
             this.dest = d;
             this.cost = c;
         }
-
         @Override
         public int compareTo(Node o) {
             return Integer.compare(this.cost, o.cost);
@@ -60,7 +57,7 @@ public class Main {
     public static void dijkstra() {
         PriorityQueue<Node> pq = new PriorityQueue<>();
         dist[1] = 0;
-        pq.offer(new Node(1, 0));
+        pq.add(new Node(1, 0));
 
         boolean [] visit = new boolean[N + 1];
 
