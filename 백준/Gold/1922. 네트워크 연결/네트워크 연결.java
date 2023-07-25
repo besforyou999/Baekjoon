@@ -61,11 +61,13 @@ public class Main {
 
             visit[edge.node] = true;
 
-            cnt += 1;
+            cnt++;
             cost += edge.cost;
 
             for (Edge next : edges.get(edge.node)) {
-                pq.add(next);
+                if (!visit[next.node]) {
+                    pq.add(next);
+                }
             }
         }
 
