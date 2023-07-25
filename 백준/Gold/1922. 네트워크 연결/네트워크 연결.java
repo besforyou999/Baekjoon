@@ -5,66 +5,70 @@ import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-
-class Edge implements Comparable<Edge>{
-    int node, cost;
-
-    Edge(int n, int c) {
-        node = n;
-        cost = c;
-    }
-
-    @Override
-    public int compareTo(Edge o) {
-        return Integer.compare(cost, o.cost);
-    }
-}
-
 public class Main {
+
+
+    static class Edge implements Comparable<Edge> {
+        int node, cost;
+        Edge(int n, int c) {
+            this.node = n;
+            this.cost = c;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return Integer.compare(this.cost, o.cost);
+        }
+    }
+
     static int N, M;
-    static ArrayList<ArrayList<Edge>> graph;
+
+    static ArrayList<ArrayList<Edge>> edges; // 특정 정점에서 특정 정점으로 가는 edge를 기록하기 위한 2차원 배열
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
         N = Integer.parseInt(br.readLine());
         M = Integer.parseInt(br.readLine());
 
-        graph = new ArrayList<>();
-        for (int i = 0 ; i <= N ; i++) {
-            graph.add(new ArrayList<>());
+        edges = new ArrayList<>();
+        for (int v = 0 ; v <= N ; v++) {
+            edges.add(new ArrayList<Edge>());
         }
 
-        for (int i = 0 ; i < M ; i++) {
+        for (int e = 0 ; e < M ; e++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
-            int c = Integer.parseInt(st.nextToken());
-            graph.get(a).add(new Edge(b, c));
-            graph.get(b).add(new Edge(a, c));
+            int A = Integer.parseInt(st.nextToken());
+            int B = Integer.parseInt(st.nextToken());
+            int C = Integer.parseInt(st.nextToken());
+
+            edges.get(A).add(new Edge(B, C));
+            edges.get(B).add(new Edge(A, C));
         }
 
-        System.out.println(prim(1));
-
-    }
-
-    static int prim(int start) {
         PriorityQueue<Edge> pq = new PriorityQueue<>();
-        boolean visit[] = new boolean[N + 1];
-        pq.add(new Edge(start, 0));
-        Edge e;
-        int ans = 0;
-        while(!pq.isEmpty()) {
-            e = pq.remove();
-            if (!visit[e.node]) {
-                visit[e.node] = true;
-                ans += e.cost;
+        pq.add(new Edge(1, 0));
 
-                for (Edge next : graph.get(e.node)) {
-                    if (!visit[next.node]) {
-                        pq.add(next);
-                    }
-                }
+        boolean [] visit = new boolean[N + 1];
+
+        int cnt = 0;
+        long cost = 0;
+
+        while (!pq.isEmpty() && cnt < N) {
+            Edge edge = pq.poll();
+
+            if (visit[edge.node]) continue;
+
+            visit[edge.node] = true;
+
+            cnt += 1;
+            cost += edge.cost;
+
+            for (Edge next : edges.get(edge.node)) {
+                pq.add(next);
             }
         }
-        return ans;
+
+        System.out.println(cost);
     }
 }
