@@ -19,33 +19,32 @@ class Pair implements Comparable<Pair>{
 }
 
 public class Main {
-    static int N;
-    static ArrayList<Pair> pairs = new ArrayList<>();
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        N = Integer.parseInt(br.readLine());
 
-        for (int i = 0 ; i < N ; i++) {
+        int N = Integer.parseInt(br.readLine());
+        ArrayList<Pair> pairs = new ArrayList<>();
+
+        for (int n = 0 ; n < N ; n++) {
             StringTokenizer st = new StringTokenizer(br.readLine());
             int idx = Integer.parseInt(st.nextToken());
-            int number = Integer.parseInt(st.nextToken());
-            pairs.add(new Pair(idx, number));
+            int val = Integer.parseInt(st.nextToken());
+            pairs.add(new Pair(idx, val));
         }
 
         Collections.sort(pairs);
 
-        int dp [] = new int[N];
-
         int max = -1;
+        int [] dp = new int[N];
 
-        for (int i = 0 ; i < N ; i++) {
-            dp[i] = 1;
-            for (int j = 0 ; j < i ; j++) {
-                if (pairs.get(i).number > pairs.get(j).number && dp[i] < dp[j] + 1) {
-                    dp[i] = dp[j] + 1;
+        for (int k = 0 ; k < N ; k++) {
+            dp[k] = 1;
+            for (int i = 0 ; i < k ; i++) {
+                if (pairs.get(k).number > pairs.get(i).number) {
+                    dp[k] = Math.max(dp[k], dp[i] + 1);
                 }
             }
-            max = Math.max(max, dp[i]);
+            max = Math.max(max, dp[k]);
         }
 
         System.out.println(N - max);
