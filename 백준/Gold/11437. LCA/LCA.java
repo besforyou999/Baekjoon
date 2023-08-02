@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 public class Main {
+
     static int N, M;
     static int [] parent, depth;
     static List<List<Integer>> list;
@@ -36,14 +37,17 @@ public class Main {
 
         M = Integer.parseInt(br.readLine());
 
-        for (int i = 0 ; i < M ; i++) {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < M ; i++) {
             st = new StringTokenizer(br.readLine());
             int u = Integer.parseInt(st.nextToken());
             int v = Integer.parseInt(st.nextToken());
             int ret = lca(u, depth[u], v, depth[v]);
-            System.out.println(ret);
+            sb.append(ret).append("\n");
         }
 
+        System.out.print(sb);
     }
 
     static int lca(int a, int aDepth, int b, int bDepth) {
