@@ -1,29 +1,29 @@
-from sys import stdin
+import sys
+input = sys.stdin.readline
 
-T = int(stdin.readline())
+T = int(input())
 
-answer = ""
-
-for _ in range(T):
+def isVPS(line):
     stack = []
-    line = stdin.readline().split()[0]
-    
     for ch in line:
-        if ch == "(":
+        if ch == '(':
             stack.append(ch)
-        elif ch == ")":
+        elif ch == ')':
             if len(stack) == 0:
-                stack.append(ch)
-            else:
-                peek = stack[-1]
-                if peek == ")":
-                    stack.append(ch)
-                elif peek == "(":
-                    stack.pop()
+                return False
+            peek = stack[-1]
+            if peek == '(':
+                stack.pop()
 
     if len(stack) == 0:
-        answer += "YES\n"
-    else:
-        answer += "NO\n"
+        return True
 
-print(answer)
+    return False
+
+for _ in range(T):
+    line = input()
+    result = isVPS(line)
+    if result:
+        print("YES")
+    else:
+        print("NO")
