@@ -9,8 +9,12 @@ const GCD = (a, b) => {
     return GCD(b , a % b);
 }
 
+let ans = "";
+
 for (let i = 0 ; i < T ; i++) {
     const [A, B] = input[i].split(" ");
     const gcd = GCD(A, B);
-    console.log(A * B / gcd);
+    ans += A * B / gcd + "\n";
 }
+
+console.log(ans);
