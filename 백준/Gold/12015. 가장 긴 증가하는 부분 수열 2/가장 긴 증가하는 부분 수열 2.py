@@ -21,6 +21,6 @@ for a in arr:
             else:
                 left = mid + 1
 
-        seq[left] = a
+        seq[right] = a
 
 print(len(seq) - 1)
