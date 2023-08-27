@@ -10,13 +10,13 @@ def step1(s):
 
 
 def solution(s):
-    zeroCnt = 0
+    zero_cnt = 0
     loop = 0
 
     while s != '1':
-        tmp, deletedZero = step1(s)
-        zeroCnt += deletedZero
         loop += 1
-        s = bin(len(tmp))[2:]
-
-    return [loop, zeroCnt]
+        num = s.count('1')
+        zero_cnt += len(s) - num
+        s = bin(num)[2:]
+        
+    return [loop, zero_cnt]
