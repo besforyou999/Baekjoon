@@ -2,32 +2,50 @@ import sys
 input = sys.stdin.readline
 
 V, E = map(int, input().split())
-Vroot = [i for i in range(V + 1)]
-Elist = []
+
+root = [i for i in range(V + 1)]
+
+queue = []
 
 for _ in range(E):
-    Elist.append(list(map(int, input().split())))
+    A, B, C = map(int, input().split())
+    queue.append((A, B, C))
 
-Elist.sort(key=lambda x:x[2])
+queue.sort(key=lambda e: e[2])
 
 
 def find(x):
-    if x != Vroot[x]:
-        Vroot[x] = find(Vroot[x])
-    return Vroot[x]
+    if x == root[x]:
+        return x
+    root[x] = find(root[x])
+    return root[x]
 
 
-answer = 0
+def union(a, b):
+    a = find(a)
+    b = find(b)
 
-for s, e, w in Elist:
-    sRoot = find(s)
-    eRoot = find(e)
-    if sRoot != eRoot:
-        if sRoot > eRoot:
-            Vroot[sRoot] = eRoot
-        else:
-            Vroot[eRoot] = sRoot
-        answer += w
+    if a == b:
+        return
+
+    if a < b:
+        root[b] = a
+    else:
+        root[a] = b
 
 
-print(answer)
+def sameRoot(a, b):
+    return find(a) == find(b)
+
+
+ans = 0
+
+
+for A, B, C in queue:
+    if sameRoot(A, B):
+        continue
+
+    union(A, B)
+    ans += C
+
+print(ans)
