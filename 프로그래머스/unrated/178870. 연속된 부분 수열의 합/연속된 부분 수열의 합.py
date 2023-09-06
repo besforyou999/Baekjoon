@@ -11,7 +11,7 @@ def solution(sequence, k):
             if rp >= N:
                 sum -= sequence[lp]
                 lp += 1
-                continue
+                break
             sum += sequence[rp]
         elif sum > k:
             sum -= sequence[lp]
