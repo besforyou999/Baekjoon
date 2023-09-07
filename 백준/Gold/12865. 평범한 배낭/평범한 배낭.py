@@ -1,28 +1,22 @@
 import sys
-input = sys.stdin.readline
 
-def knapsack(W, wt, val, n):
-    dp = [[0 for _ in range(W+1)] for _ in range(n+1)]
-    for i in range(n + 1):
-        for w in range(W + 1):
-            if i == 0 or w == 0:
-                dp[i][w] = 0
-            elif wt[i-1] <= w:
-                dp[i][w] = max(dp[i-1][w], val[i-1] + dp[i-1][w-wt[i-1]])
-            else:
-                dp[i][w] = dp[i-1][w]
+N, K = map(int, sys.stdin.readline().split())
 
-    return dp[n][w]
-
-
-N, K = map(int, input().split())
-
-item_weight = []
-values = []
+weight = ['empty']
+value = ['empty']
 
 for _ in range(N):
-    i, v = map(int, input().split())
-    item_weight.append(i)
-    values.append(v)
+    w, v = map(int, sys.stdin.readline().split())
+    weight.append(w)
+    value.append(v)
 
-print(knapsack(K, item_weight, values, N))
+dp = [[0] * (K + 1) for _ in range(N + 1)]
+
+for i in range(1, N + 1):
+    for j in range(1, K + 1):
+        if j < weight[i]:
+            dp[i][j] = dp[i - 1][j]
+        else:
+            dp[i][j] = max(dp[i-1][j], dp[i-1][j - weight[i]] + value[i])
+
+print(dp[N][K])
