@@ -1,22 +1,16 @@
-import sys
-input = sys.stdin.readline
+line1 = input()
+line2 = input()
 
-line1 = input().rstrip()
-line2 = input().rstrip()
+N1 = len(line1)
+N2 = len(line2)
 
-len1 = len(line1)
-len2 = len(line2)
+graph = [[0] * (N2 + 1) for _ in range(N1 + 1)]
 
-graph = [[0 for _ in range(len2 + 1)] for _ in range(len1 + 1)]
-
-ans = 0
-
-for i in range(1, len1 + 1):
-    for j in range(1, len2 + 1):
-        if line2[j-1] == line1[i-1]:
+for i in range(1, N1 + 1):
+    for j in range(1, N2 + 1):
+        if line1[i-1] == line2[j-1]:
             graph[i][j] = graph[i-1][j-1] + 1
         else:
             graph[i][j] = max(graph[i-1][j], graph[i][j-1])
-        ans = max(ans, graph[i][j])
 
-print(ans)
+print(graph[N1][N2])
