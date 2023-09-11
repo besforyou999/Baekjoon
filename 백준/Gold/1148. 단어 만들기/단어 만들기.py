@@ -43,4 +43,4 @@ while True:
     min_words = "".join(sorted([key for key in alphas if alphas[key]['used_cnt'] == min_ans]))
     max_words = "".join(sorted([key for key in alphas if alphas[key]['used_cnt'] == max_ans]))
 
-    print("%s %d %s %d" % (min_words, min_ans, max_words, max_ans))
+    print(min_words, min_ans, max_words, max_ans)
