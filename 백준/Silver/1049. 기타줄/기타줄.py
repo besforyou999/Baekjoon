@@ -21,8 +21,6 @@ blobs.sort()
 
 ans = 1000000000
 
-# 팩 할 수 있는 만큼 + 낱개 할 수 있는 만큼
-
 # 전부 다 팩
 ans = min(ans, pack_needed * packs[0])
 
@@ -30,11 +28,7 @@ ans = min(ans, pack_needed * packs[0])
 ans = min(ans, N * singles[0])
 
 # 팩 1개, 낱개 * 6 가격 중 가장 작은걸 찾는다.
-
-tmp = 0
-
-for _ in range(N // 6):
-    tmp += blobs[0]
+tmp = blobs[0] * (N // 6)
 
 remain = N % 6
 
