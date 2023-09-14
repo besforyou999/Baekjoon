@@ -1,19 +1,23 @@
 N, M = map(int, input().split())
-arr = list(map(int, input().split()))
+A = list(map(int, input().split()))
 
-left, right = 0, 1
+lp, rp = 0, 1
 cnt = 0
 
-while right <= N and left <= N:
+A.insert(0, 0)
+for i in range(1, N + 1):
+    A[i] = A[i] + A[i - 1]
 
-    nums = arr[left:right]
-    tmp = sum(nums)
+while lp <= N and rp <= N:
+
+    tmp = A[rp] - A[lp]
+
     if tmp < M:
-        right += 1
+        rp += 1
     elif tmp > M:
-        left += 1
+        lp += 1
     else:
-        right += 1
+        rp += 1
         cnt += 1
 
 print(cnt)
