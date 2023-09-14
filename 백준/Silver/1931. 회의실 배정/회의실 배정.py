@@ -2,19 +2,21 @@ import sys
 input = sys.stdin.readline
 
 N = int(input())
-times = []
+
+elements = []
 for _ in range(N):
     start, end = map(int, input().split())
-    times.append((start, end))
+    elements.append((start, end))
 
-times.sort(key=lambda e: (e[1], e[0]))
+elements.sort(key=lambda e: (e[1], e[0]))
 
-cnt = 1
-end_time = times[0][1]
+first = elements.pop(0)
+ans = [first]
+cur = first[1]
 
-for i in range(1, N):
-    if end_time <= times[i][0]:
-        cnt += 1
-        end_time = times[i][1]
+for ele in elements:
+    if cur <= ele[0]:
+        ans.append(ele)
+        cur = ele[1]
 
-print(cnt)
+print(len(ans))
