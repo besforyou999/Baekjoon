@@ -1,40 +1,38 @@
-import heapq, sys
+import sys, heapq
+
 input = sys.stdin.readline
-INF = int(1e9)
 
-
-def dijkstra(start):
-    q = []
-    heapq.heappush(q, (0, start))
-    distance[start] = 0
-
-    while q:
-        dist, now = heapq.heappop(q)
-
-        if distance[now] < dist:
-            continue
-
-        # 현재 노드와 연결된 인접 노드 확인
-        for i in graph[now]:
-            cost = dist + i[1]
-            if cost < distance[i[0]]:
-                distance[i[0]] = cost
-                heapq.heappush(q, (cost, i[0]))
-
-
+INF = sys.maxsize
 V, E = map(int, input().split())
 K = int(input())
 
+dp = [INF] * (V + 1)
+heap = []
 graph = [[] for _ in range(V + 1)]
-distance = [INF] * (V + 1)
+
+def Dijkstra(start):
+    dp[start] = 0
+    heapq.heappush(heap, (0, start))
+
+    while heap:
+        wei, now = heapq.heappop(heap)
+
+        if dp[now] < wei:
+            continue
+
+        for w, next_node in graph[now]:
+
+            next_wei = w + wei
+
+            if next_wei < dp[next_node]:
+                dp[next_node] = next_wei
+                heapq.heappush(heap, (next_wei, next_node))
+
 for _ in range(E):
     u, v, w = map(int, input().split())
-    graph[u].append((v, w))
+    graph[u].append((w, v))
 
-dijkstra(K)
+Dijkstra(K)
 
 for i in range(1, V + 1):
-    if distance[i] == INF:
-        print("INF")
-    else:
-        print(distance[i])
+    print("INF" if dp[i] == INF else dp[i])
