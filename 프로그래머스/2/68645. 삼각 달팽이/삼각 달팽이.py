@@ -11,8 +11,8 @@ def solution(n):
     
     for i in range(n, 0, -1):
         for _ in range(i):
-            r = r + dr[d]
-            c = c + dc[d]
+            r += dr[d]
+            c += dc[d]
             matrix[r][c] = number
             number += 1
         
